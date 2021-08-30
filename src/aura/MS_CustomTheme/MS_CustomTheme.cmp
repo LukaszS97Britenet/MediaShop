@@ -6,7 +6,8 @@
     <aura:attribute name="CurrentUser" type="Object"/>
     <aura:attribute name="showCart" type="boolean" default="false"/>
     <aura:attribute name="amount" type="Decimal" default="0"/>
-    <aura:handler event="c:MS_CartProductsAmount" action="{!c.handleApplicationEvent}"/>
+    <aura:handler event="c:MS_CartProductsAmount" action="{!c.getProductsAmount}"/>
+    <aura:handler event="c:MS_CloseCart" action="{!c.hideCart}"/>
     <aura:handler name="init" value="{!this}" action="{!c.getAmount}"/>
     <force:recordData recordId="{!$SObjectType.CurrentUser.Id}"
                       fields="Profile.Name"
