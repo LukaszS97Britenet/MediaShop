@@ -1,0 +1,45 @@
+.THIS .inner_container {
+    overflow: hidden;
+}
+
+.THIS .scroll_wrapper::-webkit-scrollbar {
+    width: 0 !important
+}
+
+.THIS .scroll_wrapper {
+    overflow: hidden;
+}
+
+.THIS .outer_container {
+    width: 100%;
+}
+
+.THIS .img_element {
+    width: 100px;
+    height: 100px;
+    cursor: pointer;
+}
+
+.THIS .img_element:hover {
+    opacity: 0.8;
+    border: 2px solid rgb(231, 226, 226);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.THIS .slds-modal__container {
+    max-width: 150%
+}
+
+.THIS .slds-modal__header {
+    border-radius: 25px;
+    margin: 0px;
+    padding: 10px
+}
+
+.THIS .image {
+    border-radius: 25px;
+}
+
+.THIS .sideButtons {
+    text-align:center;
+}
