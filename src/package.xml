@@ -3,6 +3,7 @@
     <types>
         <members>MS_DiscountManager</members>
         <members>MS_RegisterHandler</members>
+        <members>MS_Product2Service</members>
         <name>ApexClass</name>
     </types>
     <types>
@@ -23,6 +24,8 @@
         <members>MS_ProductListView</members>
         <members>MS_ProgressBar</members>
         <members>MS_ToastService</members>
+        <members>MS_ProductSearch</members>
+        <members>MS_ProductTail</members>
         <name>AuraDefinitionBundle</name>
     </types>
     <types>
