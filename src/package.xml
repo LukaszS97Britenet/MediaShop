@@ -3,6 +3,7 @@
     <types>
         <members>MS_DiscountManager</members>
         <members>MS_RegisterHandler</members>
+        <members>MS_OrderSubmit</members>
         <name>ApexClass</name>
     </types>
     <types>
