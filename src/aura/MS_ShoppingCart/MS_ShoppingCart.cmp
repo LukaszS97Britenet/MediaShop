@@ -1,0 +1,119 @@
+<aura:component description="MS_ShoppingCart" controller="MS_ShoppingCart"
+                implements="flexipage:availableForAllPageTypes,force:appHostable,force:hasRecordId,forceCommunity:availableForAllPageTypes">
+
+    <aura:attribute name="cart" type="Object"/>
+    <aura:attribute name="totalPrice" type="Decimal"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="type" type="String"/>
+    <aura:attribute name="message" type="String"/>
+    <aura:attribute name="spinner" type="boolean" default="true"/>
+    <aura:attribute name="deleteConfirm" type="boolean" default="false"/>
+    <aura:attribute name="deleteProductId" type="String" default="false"/>
+    <aura:attribute name="productToDelete" type="String"/>
+    <c:MS_ToastService type="{!v.type}" message="{!v.message}" aura:id="toastCmp"/>
+
+    <aura:if isTrue="{!v.spinner}">
+        <div aura:id="spinnerId" class="slds-spinner_container">
+            <div class="slds-spinner--brand  slds-spinner slds-spinner--large slds-is-relative" role="alert">
+                <span class="slds-assistive-text">Loading...</span>
+                <div class="slds-spinner__dot-a"></div>
+                <div class="slds-spinner__dot-b"></div>
+            </div>
+        </div>
+    </aura:if>
+
+    <lightning:layout horizontalAlign="center" multipleRows="true">
+        <lightning:layoutItem size="12">
+            <aura:if isTrue="{!not(empty(v.cart.products))}">
+
+                <div class="slds-grid">
+                    <div style="width: 40%; height: 120px; border-bottom: 1px solid rgb(230,230,230)">
+                    </div>
+                    <div style="width: 20%; height: 120px; border-bottom: 1px solid rgb(230,230,230)">
+                        <p style="margin-top: 40px; font-size: 20px; text-align: center;"><b>
+                            Total Price: €{!' ' + v.totalPrice}</b></p>
+                    </div>
+                    <div style="width: 40%; height: 120px; border-bottom: 1px solid rgb(230,230,230)">
+                    </div>
+                </div>
+
+                <aura:iteration items="{!v.cart.products}" var="product">
+                    <div class="slds-grid">
+                        <div style="width: 12%; height: 120px; border-bottom: 1px solid rgb(230,230,230)">
+                            <div style="padding: 4px;">
+                                <img class="image"
+                                     src="{!'/sfc/servlet.shepherd/document/download/' + product.product.Product2.MainImageId__c}"/>
+                            </div>
+                        </div>
+                        <div style="width: 28%; height: 120px; border-bottom: 1px solid rgb(230,230,230)" data-productid="{!product.product.Product2.Id}" onclick="{!c.productDetails}">
+                            <p style="margin-top: 40px; font-size: 20px; cursor: pointer;">{!product.product.Name}</p>
+                        </div>
+                        <div style="width: 20%; height: 120px; border-bottom: 1px solid rgb(230,230,230); text-align: center;">
+                            <p style="margin-top: 40px; font-size: 20px;">
+                                €{!' ' + product.quantity*product.product.UnitPrice}</p>
+                        </div>
+                        <div style="width: 35%; height: 120px; border-bottom: 1px solid rgb(230,230,230); text-align: center;">
+                            <div style="margin-top: 38px; font-size: 20px;">
+                                <img style="margin: 5px;" src="{! $Resource.MS_Minus}"
+                                     class="{!if(product.quantity==1,'disabled','enabled')}"
+                                     data-productid="{!product.product.Product2.Id}"
+                                     onclick="{!if(product.quantity==1,'',c.decQuantity)}"/>
+                                    {!product.quantity}
+                                <img style="margin: 5px; height: 20px; width: 20px; cursor: pointer;"
+                                     src="{! $Resource.MS_Add}"
+                                     data-productid="{!product.product.Product2.Id}" onclick="{!c.incQuantity}"/>
+                            </div>
+                        </div>
+                        <div style="width: 5%; height: 120px; border-bottom: 1px solid rgb(230,230,230)">
+                            <img style="height: 30px; width: 30px; cursor: pointer; margin-top: 37px;"
+                                 src="{! $Resource.MS_Delete}"
+                                 data-productid="{!product.product.Product2.Id}"
+                                 onclick="{!c.showDeleteConfirm}"
+                                 title="{!$Label.c.Delete}"/>
+                        </div>
+                    </div>
+                </aura:iteration>
+
+                <aura:set attribute="else">
+                    <div style="width: 100%; text-align:center; height: 90px; border-bottom: 1px solid rgb(230,230,230)">
+                        <p style="margin-top: 40px; font-size: 20px;">{!$Label.c.MS_EmptyCart}</p>
+                    </div>
+                </aura:set>
+
+            </aura:if>
+
+        </lightning:layoutItem>
+    </lightning:layout>
+
+    <aura:if isTrue="{!v.deleteConfirm}">
+
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+                 aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open slds-modal_small">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <lightning:buttonIcon iconName="utility:close"
+                                          onclick="{! c.closeConfirmDeletion }"
+                                          alternativeText="close"
+                                          variant="bare-inverse"
+                                          class="slds-modal__close"/>
+                    <h2 id="modal-heading-01"
+                        class="slds-text-heading_medium slds-hyphenate">{!$Label.c.Confirm_deletion}</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    Are You sure You want to delete this product from cart?
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning:button variant="neutral"
+                                      label="{!$Label.c.Cancel}"
+                                      title="{!$Label.c.Cancel}"
+                                      onclick="{! c.closeConfirmDeletion }"/>
+                    <lightning:button variant="brand"
+                                      label="{!$Label.c.Delete}"
+                                      title="{!$Label.c.Delete}" onclick="{!c.deleteProduct}"/>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </aura:if>
+
+</aura:component>
