@@ -15,5 +15,5 @@
 
     getAmount: function(component, event, helper) {
         helper.getAmount(component);
-    }
+    },
 })

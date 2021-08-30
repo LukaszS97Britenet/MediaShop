@@ -11,6 +11,7 @@
     <aura:attribute name="deleteProductId" type="String" default="false"/>
     <aura:attribute name="productToDelete" type="String"/>
     <aura:registerEvent name="MS_CartProductsAmount" type="c:MS_CartProductsAmount"/>
+    <aura:registerEvent name="MS_CloseCart" type="c:MS_CloseCart"/>
     <c:MS_ToastService type="{!v.type}" message="{!v.message}" aura:id="toastCmp"/>
 
     <aura:if isTrue="{!v.spinner}">
@@ -35,6 +36,8 @@
                             Total Price: €{!' ' + v.totalPrice}</b></p>
                     </div>
                     <div style="width: 40%; height: 120px; border-bottom: 1px solid rgb(230,230,230)">
+                        <lightning:button label="{!$Label.c.MS_SubmitOrder}" variant="brand"
+                                          class="slds-m-top--xx-small buttonPosition" onclick="{!c.launchFlow}"/>
                     </div>
                 </div>
 

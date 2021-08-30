@@ -39,5 +39,17 @@
           "slideDevName": "related"
         });
         navEvt.fire();
+    },
+
+    launchFlow: function(component, event, helper) {
+         var appEvent = $A.get("e.c:MS_CloseCart");
+         appEvent.fire();
+        var address = '/s/submitorder';
+        var urlEvent = $A.get("e.force:navigateToURL");
+        urlEvent.setParams({
+          "url": address,
+          "isredirect" :false
+        });
+        urlEvent.fire();
     }
 })
