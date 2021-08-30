@@ -1,9 +1,13 @@
-<aura:component implements="forceCommunity:themeLayout" access="global" description="MS_CustomTheme">
+<aura:component implements="forceCommunity:themeLayout" access="global" description="MS_CustomTheme"
+                controller="MS_ShoppingCart">
 
     <aura:attribute name="profileMenu" type="Aura.Component[]" required="false"/>
     <aura:attribute name="navBar" type="Aura.Component[]" required="false"/>
     <aura:attribute name="CurrentUser" type="Object"/>
     <aura:attribute name="showCart" type="boolean" default="false"/>
+    <aura:attribute name="amount" type="Decimal" default="0"/>
+    <aura:handler event="c:MS_CartProductsAmount" action="{!c.handleApplicationEvent}"/>
+    <aura:handler name="init" value="{!this}" action="{!c.getAmount}"/>
     <force:recordData recordId="{!$SObjectType.CurrentUser.Id}"
                       fields="Profile.Name"
                       targetFields="{!v.CurrentUser}"/>
@@ -14,15 +18,22 @@
                 <img style="height: 80px; width: 80px; cursor: pointer; margin-left: 17%;"
                      src="{! $Resource.MediaShopLogo}"/>
             </div>
-            <div style="height: 90px;background-color: rgb(3, 45, 96); padding: 27px; width: 10%;">
+            <div style="height: 90px;background-color: rgb(3, 45, 96); padding: 27px; width: 10%;" class="slds-grid">
                 <aura:if isTrue="{!v.CurrentUser.Profile.Name == 'Customer Community'}">
                     <img style="height: 35px; width: 35px; cursor: pointer; margin-left: 60px;" title="Go To Cart"
                          src="{! $Resource.MS_Cart}" onclick="{!c.showCart}"/>
+                    <aura:if isTrue="{!v.amount!=0}">
+                        <div style="margin-top: 25px;">
+                            <div style="font-size:10px; height: 15px; width: 15px;background-color: yellow; border-radius: 30px; color: rgb(3, 45, 96);padding-bottom: 5px; text-align: center;">
+                                <b>{!v.amount}</b>
+                            </div>
+                        </div>
+                    </aura:if>
                 </aura:if>
             </div>
             <div class="profileMenuRegion"
                  style="height: 90px;background-color: rgb(3, 45, 96); padding: 30px; width: 20%;">
-                        {!v.profileMenu}
+                    {!v.profileMenu}
             </div>
         </div>
         <div class="navigation">
