@@ -1,7 +1,6 @@
 <aura:component description="MS_OrderSubmit" controller="MS_OrderSubmit"
                 implements="flexipage:availableForAllPageTypes,force:appHostable,force:hasRecordId,forceCommunity:availableForAllPageTypes">
 
-    <aura:attribute name="banks" type="List" default="['ING', 'Alior', 'Pocztowy', 'BNP', 'Santander', 'IPKO']" />
     <aura:attribute name="firstScreen" type="Boolean" default="true"/>
     <aura:attribute name="secondScreen" type="Boolean" default="false"/>
     <aura:attribute name="thirdScreen" type="Boolean" default="false"/>
@@ -12,6 +11,8 @@
     <aura:attribute name="message" type="String"/>
     <aura:attribute name="spinner" type="boolean" default="true"/>
     <c:MS_ToastService type="{!v.type}" message="{!v.message}" aura:id="toastCmp"/>
+    <aura:attribute name="paymentMethod" type="String"/>
+    <aura:attribute name="bankName" type="String"/>
 
     <aura:if isTrue="{!v.spinner}">
         <div aura:id="spinnerId" class="slds-spinner_container">
@@ -76,7 +77,8 @@
                         </div>
                         <div style="width: 40%; height: 120px; border-bottom: 1px solid rgb(230,230,230)">
                             <lightning:button label="{!$Label.c.Next}" variant="brand"
-                                              class="slds-m-top--xx-small buttonPosition" onclick="{!c.showSecondScreen}"/>
+                                              class="slds-m-top--xx-small buttonPosition"
+                                              onclick="{!c.showSecondScreen}"/>
                         </div>
                     </div>
 
@@ -110,17 +112,22 @@
                 </div>
 
                 <div class="slds-grid">
-                    <div style="width: 40%; height: 120px; border-bottom: 1px solid rgb(230,230,230)">
+                    <div style="width: 39%; height: 120px; border-bottom: 1px solid rgb(230,230,230)">
+                    </div>
+                    <div style="width: 10%; height: 120px; border-bottom: 1px solid rgb(230,230,230)">
                         <lightning:button label="{!$Label.c.MS_Previous}" variant="brand"
-                                          class="slds-m-top--xx-small buttonPosition" onclick="{!c.showFirstScreen}"/>
+                                          class="slds-m-top--xx-small thirdButtonPosition"
+                                          onclick="{!c.showFirstScreen}"/>
                     </div>
-                    <div style="width: 20%; height: 120px; border-bottom: 1px solid rgb(230,230,230)">
-                        <p style="margin-top: 40px; font-size: 20px; text-align: center;"><b>
-                            Total Price: €{!' ' + v.totalPrice}</b></p>
+                    <div style="width: 2%; height: 120px; border-bottom: 1px solid rgb(230,230,230)">
+
                     </div>
-                    <div style="width: 40%; height: 120px; border-bottom: 1px solid rgb(230,230,230)">
+                    <div style="width: 10%; height: 120px; border-bottom: 1px solid rgb(230,230,230)">
                         <lightning:button label="{!$Label.c.Next}" variant="brand"
-                                          class="slds-m-top--xx-small buttonPosition" onclick="{!c.showThirdScreen}"/>
+                                          class="slds-m-top--xx-small thirdButtonPosition"
+                                          onclick="{!c.showThirdScreen}"/>
+                    </div>
+                    <div style="width: 39%; height: 120px; border-bottom: 1px solid rgb(230,230,230)">
                     </div>
                 </div>
 
@@ -144,23 +151,47 @@
                     <div style="width: 40%; height: 120px; border-bottom: 1px solid rgb(230,230,230)">
                     </div>
                 </div>
+                <lightning:layout horizontalAlign="center" multipleRows="true">
+                    <lightning:layoutItem class="bankImg" size="4">
+                        <img style="height: 80px; cursor: pointer;" src="{!$Resource.ING}" onclick="{!c.checkImage}"/>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem class="bankImg" size="4">
+                        <img style="height: 80px; cursor: pointer;" src="{!$Resource.Alior}" onclick="{!c.checkImage}"/>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem class="bankImg" size="4">
+                        <img style="height: 80px; cursor: pointer;" src="{!$Resource.Pocztowy}" onclick="{!c.checkImage}"/>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem class="bankImg" size="4">
+                        <img style="height: 80px; cursor: pointer;" src="{!$Resource.BNP}" onclick="{!c.checkImage}"/>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem class="bankImg" size="4">
+                        <img style="height: 80px; cursor: pointer;" src="{!$Resource.Santander}" onclick="{!c.checkImage}"/>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem class="bankImg" size="4">
+                        <img style="height: 80px; cursor: pointer;" src="{!$Resource.IPKO}" class="boxShadow" onclick="{!c.checkImage}"/>
+                    </lightning:layoutItem>
+                </lightning:layout>
 
-                <aura:iteration items="{!v.banks}" var="bank">
-                    <img src="{!'$Resource.'+bank}"/>
-
-                </aura:iteration>
+                <div style="width: 100%; height: 20px; border-bottom: 1px solid rgb(230,230,230)">
+                </div>
 
                 <div class="slds-grid">
-                    <div style="width: 40%; height: 120px; border-bottom: 1px solid rgb(230,230,230)">
-                        <lightning:button label="{!$Label.c.MS_Previous}" variant="brand"
-                                          class="slds-m-top--xx-small buttonPosition" onclick="{!c.showSecondScreen}"/>
+                    <div style="width: 39%; height: 120px; border-bottom: 1px solid rgb(230,230,230)">
                     </div>
-                    <div style="width: 20%; height: 120px; border-bottom: 1px solid rgb(230,230,230)">
+                    <div style="width: 10%; height: 120px; border-bottom: 1px solid rgb(230,230,230)">
+                        <lightning:button label="{!$Label.c.MS_Previous}" variant="brand"
+                                          class="slds-m-top--xx-small thirdButtonPosition"
+                                          onclick="{!c.showSecondScreen}"/>
+                    </div>
+                    <div style="width: 2%; height: 120px; border-bottom: 1px solid rgb(230,230,230)">
 
                     </div>
-                    <div style="width: 40%; height: 120px; border-bottom: 1px solid rgb(230,230,230)">
+                    <div style="width: 10%; height: 120px; border-bottom: 1px solid rgb(230,230,230)">
                         <lightning:button label="{!$Label.c.MS_Finish}" variant="brand"
-                                          class="slds-m-top--xx-small buttonPosition" onclick="{!c.submitDetails}"/>
+                                          class="slds-m-top--xx-small thirdButtonPosition"
+                                          onclick="{!c.submitDetails}"/>
+                    </div>
+                    <div style="width: 39%; height: 120px; border-bottom: 1px solid rgb(230,230,230)">
                     </div>
                 </div>
 
