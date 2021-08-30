@@ -45,7 +45,8 @@
                                      src="{!'/sfc/servlet.shepherd/document/download/' + product.product.Product2.MainImageId__c}"/>
                             </div>
                         </div>
-                        <div style="width: 28%; height: 120px; border-bottom: 1px solid rgb(230,230,230)" data-productid="{!product.product.Product2.Id}" onclick="{!c.productDetails}">
+                        <div style="width: 28%; height: 120px; border-bottom: 1px solid rgb(230,230,230)"
+                             data-productid="{!product.product.Product2.Id}" onclick="{!c.productDetails}">
                             <p style="margin-top: 40px; font-size: 20px; cursor: pointer;">{!product.product.Name}</p>
                         </div>
                         <div style="width: 20%; height: 120px; border-bottom: 1px solid rgb(230,230,230); text-align: center;">
