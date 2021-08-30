@@ -1,0 +1,7 @@
+<aura:component description="MS_ToastService">
+    <aura:attribute name="type" type="String" default="Error"/>
+    <aura:attribute name="message" type="String"/>
+
+    <aura:method name="toast" action="{!c.forceToast}" access="public"/>
+
+</aura:component>

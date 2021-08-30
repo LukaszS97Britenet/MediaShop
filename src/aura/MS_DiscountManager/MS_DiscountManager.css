@@ -1,0 +1,24 @@
+.THIS .cards {
+    margin: 5px;
+}
+.THIS .center-buttons {
+    text-align: center;
+}
+.THIS .align-form {
+    margin-top: -20px;
+}
+.THIS .buttonPosition {
+    margin-left: 10px;
+}
+.THIS .selectedProduct .tail {
+    opacity: 0.8;
+    border: 2px solid blue;
+    box-shadow: 4px rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.THIS.scrollerSize {
+    height: 300px;
+}
+.THIS .checkbox {
+    margin-left: 5px;
+    margin-top: -2px;
+}

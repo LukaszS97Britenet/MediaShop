@@ -1,0 +1,159 @@
+<aura:component description="MS_ProductAddEdit" controller="MS_Product2Service"
+                implements="force:lightningQuickActionWithoutHeader,flexipage:availableForAllPageTypes,force:hasRecordId"
+                access="global">
+    <lightning:overlayLibrary aura:id="overlayLib"/>
+    <aura:registerEvent name="appEvent" type="c:MS_ImagesRefresh"/>
+    <lightning:quickActionAPI aura:id="quickActionAPI"/>
+    <aura:registerEvent name="MS_ProductAddEditEvent" type="c:MS_ProductAddEditEvent"/>
+    <lightning:navigation aura:id="navService"/>
+    <aura:attribute access="public" name="showUploadFile" type="boolean" default="false"/>
+    <aura:attribute access="public" name="accept" type="List"
+                    default="['.jpg', '.jpeg', '.pdf','.png']"/>
+    <aura:attribute access="public" name="multiple" type="Boolean" default="true"/>
+    <aura:attribute access="public" name="disabled" type="Boolean" default="false"/>
+    <aura:attribute access="public" name="uploadedFiles" type="List" default=""/>
+    <aura:attribute access="public" name="filesToDelete" type="String[]" default="[]"/>
+    <aura:attribute access="public" name="sObjectAttachedFiles" type="List" default="[]"/>
+    <aura:attribute access="public" name="sObjectName" type="String" default=""/>
+    <aura:attribute access="public" name="sObjectId" type="String" default=""/>
+    <aura:attribute name="isModalOpen" type="boolean" default="false"/>
+    <aura:attribute name="imageId" type="String"/>
+    <aura:attribute name="mainImage" type="String" default="false"/>
+    <aura:attribute name="firstStep" type="boolean" default="true"/>
+    <aura:attribute name="thirdStep" type="boolean" default="false"/>
+    <aura:attribute name="name" type="String"/>
+    <aura:attribute name="brand" type="String"/>
+    <aura:attribute name="model" type="String"/>
+    <aura:attribute name="productCode" type="String"/>
+    <aura:attribute name="installment" type="Boolean" default="false"/>
+    <aura:attribute name="active" type="Boolean" default="false"/>
+    <aura:attribute name="description" type="String"/>
+    <aura:attribute name="cost" type="Currency"/>
+    <aura:attribute name="currentInventory" type="Decimal"/>
+    <aura:attribute name="color" type="String"/>
+    <aura:attribute name="operationType" type="String" default="Edit"/>
+    <aura:attribute name="categories" type="String[]" default="Headset,Mouse,Monitor,Laptop,PC,Keyboard,Loudspeakers"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+
+    <aura:if isTrue="{!v.firstStep}">
+        <h1 style="font-weight: bold; font-size: 13px;">{!v.operationType + ' ' + $Label.c.MS_Product +' '+ $Label.c.MS_Details}</h1>
+
+        <lightning:input value="{!v.name}" placeholder="{!$Label.c.MS_Name}" label="{!$Label.c.MS_Name}" name="name"
+                         required="true"/>
+        <lightning:input value="{!v.brand}" placeholder="{!$Label.c.MS_Brand}" label="{!$Label.c.MS_Brand}"
+                         name="brand"/>
+        <lightning:input value="{!v.model}" placeholder="{!$Label.c.MS_Model}" label="{!$Label.c.MS_Model}"
+                         name="model"/>
+
+
+        <lightning:select aura:id="selectCategory" name="Category" label="Category">
+            <option value="">Select category</option>
+            <aura:iteration items="{!v.categories}" var="category">
+                <option value="{!category}" text="{!category}"></option>
+            </aura:iteration>
+        </lightning:select>
+
+
+        <lightning:input value="{!v.color}" placeholder="{!$Label.c.MS_Color}" label="{!$Label.c.MS_Color}"
+                         name="color"/>
+        <lightning:input value="{!v.productCode}" placeholder="{!$Label.c.MS_ProductCode}"
+                         label="{!$Label.c.MS_ProductCode}"
+                         name="productCode"/>
+        <lightning:input value="{!v.cost}" placeholder="{!$Label.c.MS_Cost}" label="{!$Label.c.MS_Cost}" name="cost"
+                         required="true"/>
+        <lightning:input value="{!v.currentInventory}" placeholder="{!$Label.c.MS_CurrentInventory}"
+                         label="{!$Label.c.MS_CurrentInventory}" name="currentInventory"/>
+        <lightning:input checked="{!v.installment}" name="installment" label="{!$Label.c.MS_Installment}"
+                         type="checkbox"/>
+        <lightning:input checked="{!v.active}" name="active" label="{!$Label.c.MS_Active}" type="checkbox"/>
+        <lightning:input value="{!v.description}" placeholder="{!$Label.c.MS_Description}"
+                         label="{!$Label.c.MS_Description}"
+                         name="description"/>
+        <div style="margin-top: 10px; border-top: 2px solid rgb(221, 219, 218); text-align: right; padding-top: 10px;">
+            <lightning:button variant="neutral"
+                              label="{!$Label.c.Cancel}"
+                              title="{!$Label.c.Cancel}"
+                              onclick="{! c.closeModel }"/>
+            <lightning:button variant="brand"
+                              label="{!$Label.c.Save}"
+                              title="{!$Label.c.Save}"
+                              onclick="{!c.submitDetails}"/>
+        </div>
+
+    </aura:if>
+
+    <aura:if isTrue="{!and(!v.thirdStep, !v.firstStep)}">
+        <div style="position: relative; height: 580px;">
+
+            <h1 style="font-weight: bold; font-size: 13px;">{!$Label.c.MS_UploadImages}</h1>
+
+            <lightning:fileUpload name="fileUploader"
+                                  multiple="{!v.multiple}"
+                                  accept="{!v.accept}"
+                                  disabled="{!v.disabled}"
+                                  recordId="{!v.sObjectId}"
+                                  onuploadfinished="{!c.handleUploadFinished}"/>
+
+            <aura:if isTrue="{!and(v.operationType  == 'Edit',not(empty(v.sObjectAttachedFiles)))}">
+                <div style="margin-top: 10px; text-align: center;">
+                    <lightning:button variant="destructive"
+                                      label="Delete choosen images"
+                                      title="Delete choosen images"
+                                      onclick="{!c.handleCancelUpload}"/>
+                </div>
+            </aura:if>
+
+            <lightning:layout multipleRows="true">
+                <aura:iteration items="{!v.sObjectAttachedFiles}" var="file">
+                    <lightning:layoutItem class="slds-m-left_xx-large" padding="around-small">
+                        <div id="{!file.Id}" onclick="{!c.addToDelete}" style="cursor: pointer;" data-id="{!file.Id}">
+                            <lightning:fileCard fileId="{!file.Id}" description="{!file.Title}"/>
+                        </div>
+                    </lightning:layoutItem>
+                </aura:iteration>
+            </lightning:layout>
+            <div style="position: absolute; width: 100%; bottom: 10px;margin-top: 10px; border-top: 2px solid rgb(221, 219, 218); text-align: right; padding-top: 10px;">
+                <lightning:button variant="neutral"
+                                  label="{!$Label.c.Cancel}"
+                                  title="{!$Label.c.Cancel}"
+                                  onclick="{! c.closeModel }"/>
+                <lightning:button variant="brand"
+                                  label="{!$Label.c.Next}"
+                                  title="{!$Label.c.Next}"
+                                  onclick="{!c.submitImages}"/>
+            </div>
+        </div>
+
+    </aura:if>
+
+    <aura:if isTrue="{!v.thirdStep}">
+        <div style="position: relative; height: 580px;">
+            <h1 style="font-weight: bold; font-size: 13px;">{!$Label.c.MS_ChooseMainImage}</h1>
+
+            <lightning:layout multipleRows="true">
+                <aura:iteration items="{!v.sObjectAttachedFiles}" var="file">
+                    <lightning:layoutItem padding="around-small">
+                        <fieldset style="width: 170px;">
+                            <img style="cursor: pointer; height: 170px; width: 170px;" id="{!file.Id}"
+                                 src="{!'/sfc/servlet.shepherd/document/download/' + file.Id}"
+                                 alt="{!file.title}" onclick="{!c.selectImage}" data-value="{!file.Id}" class="{!if(file.selected,'selectedImage','')}"/>
+                        </fieldset>
+                    </lightning:layoutItem>
+                </aura:iteration>
+            </lightning:layout>
+
+            <div style="position: absolute; width: 100%; bottom: 10px;margin-top: 10px; border-top: 2px solid rgb(221, 219, 218); text-align: right; padding-top: 10px;">
+                <lightning:button variant="neutral"
+                                  label="{!$Label.c.Cancel}"
+                                  title="{!$Label.c.Cancel}"
+                                  onclick="{! c.closeModel }"/>
+                <lightning:button variant="brand"
+                                  label="{!$Label.c.MS_Finish}"
+                                  title="{!$Label.c.MS_Finish}"
+                                  onclick="{!c.submitMainImage}"/>
+            </div>
+        </div>
+
+    </aura:if>
+
+</aura:component>

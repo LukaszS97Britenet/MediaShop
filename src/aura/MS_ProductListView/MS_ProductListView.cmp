@@ -1,0 +1,20 @@
+<aura:component description="MS_ProductListView" controller="MS_Product2Service"
+                implements="flexipage:availableForAllPageTypes" access="global">
+    <lightning:overlayLibrary aura:id="overlayLib"/>
+    <ltng:require styles="{!$Resource.NoHeader}"/>
+    <aura:attribute name="isModalOpen" type="boolean" default="false"/>
+
+    <lightning:card>
+        <aura:set attribute="actions">
+            <lightning:button variant="brand" label="{!$Label.c.MS_AddProduct}" onclick="{!c.openModel }"/>
+        </aura:set>
+    </lightning:card>
+    <lightning:listView aura:id="listViewProducts"
+                        objectApiName="Product2"
+                        listName="All_Products"
+                        rows="10"
+                        showActionBar="false"
+                        enableInlineEdit="false"
+                        showRowLevelActions="true"/>
+
+</aura:component>

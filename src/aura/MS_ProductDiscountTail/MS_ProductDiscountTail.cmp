@@ -1,0 +1,56 @@
+<aura:component description="MS_ProductDiscountTail">
+
+    <aura:attribute name="product" type="Object"/>
+    <aura:attribute name="selected" type="Boolean" default="false"/>
+    <aura:attribute name="pricebookName" type="String"/>
+
+    <div class="tail" style="height: 295px;">
+        <aura:if isTrue="{!not(empty(v.product.Product2.MainImageId__c))}">
+            <img style="max-height: 236px; min-height: 236px;"
+                 src="{!'/sfc/servlet.shepherd/document/download/' + v.product.Product2.MainImageId__c}"
+                 alt="{!v.product.Name}"/>
+            <div class="tailTitle" style="max-height:50px;">
+                <lightning:layout horizontalAlign="center" multipleRows="true">
+                    <lightning:layoutItem size="12">
+                            {!v.product.Name}
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="12">
+                    {!$Label.c.MS_Price}:
+                        <aura:if isTrue="{!v.product.PercentDiscount__c!=null}"><s>€{!v.product.price}</s>
+                            <div style="all:unset; color: red;"> €{!v.product.UnitPrice}</div>
+                            <p style="font-size: 10px;">Discount:{!v.product.PercentDiscount__c}%</p>
+                            <aura:set attribute="else">
+                                €{!v.product.UnitPrice}
+                                <aura:if isTrue="{!v.product.percentDiscount != null}">
+                                    <p style="font-size: 10px;">Assigned Discount:{!v.product.percentDiscount}%</p>
+                                </aura:if>
+                            </aura:set>
+                        </aura:if>
+                    </lightning:layoutItem>
+                </lightning:layout>
+            </div>
+            <aura:set attribute="else">
+                <img style="max-height: 236px; min-height: 236px;" src="{!$Resource.MS_DefaultPhotoImage}"
+                     alt="{!v.product.Name}"/>
+                <div class="tailTitle" style="max-height:50px;">
+                    <lightning:layout horizontalAlign="center" multipleRows="true">
+                        <lightning:layoutItem size="12">
+                                {!v.product.Name}
+                        </lightning:layoutItem>
+                        <lightning:layoutItem size="12">
+                        {!$Label.c.MS_Price}:
+                            <aura:if isTrue="{!v.product.PercentDiscount__c!=null}"><s>€{!v.product.price}</s>
+                                <div style="all:unset; color: red;"> €{!v.product.UnitPrice}</div>
+                                <p style="font-size: 10px;">Discount:{!'   ' + v.product.PercentDiscount__c}%</p>
+                                <aura:set attribute="else">
+                                    €{!v.product.UnitPrice}
+                                </aura:set>
+                            </aura:if>
+                        </lightning:layoutItem>
+                    </lightning:layout>
+                </div>
+            </aura:set>
+        </aura:if>
+    </div>
+
+</aura:component>

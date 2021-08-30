@@ -1,0 +1,244 @@
+<aura:component description="MS_DiscountManager" controller="MS_DiscountManager"
+                implements="flexipage:availableForAllPageTypes,force:appHostable">
+
+    <ltng:require styles="{!$Resource.NoHeader}"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="searchedProducts" type="Object"/>
+    <aura:attribute name="searchedProductsAll" type="Object"/>
+    <aura:attribute name="pricebookName" type="String"/>
+    <aura:attribute name="pricebookNameInModal" type="String"/>
+    <aura:attribute name="percentageOfPromotion" type="String"/>
+    <aura:attribute name="percentageOfPromotionInPricebook" type="String"/>
+    <aura:attribute name="percentageOfPromotionInModal" type="String"/>
+    <aura:attribute name="productsForDiscount" type="String[]" default="[]"/>
+    <aura:attribute name="managedProductsForDiscount" type="String[]" default="[]"/>
+    <aura:attribute name="priceBooks" type="Object"/>
+    <aura:attribute name="isManageProductsOpen" type="boolean" default="false"/>
+    <aura:attribute name="pricebookId" type="String"/>
+    <aura:attribute name="pricebook" type="Object"/>
+    <aura:attribute name="selectAll" type="Boolean"/>
+    <aura:attribute name="deleteConfirm" type="Boolean" default="false"/>
+    <aura:attribute name="pricebookToDeleteId" type="String"/>
+    <aura:attribute name="pricebookToDeleteName" type="String"/>
+    <aura:attribute name="pricebookNameCard" type="String" default="Standard Price Book"/>
+    <aura:attribute name="type" type="String"/>
+    <aura:attribute name="message" type="String"/>
+    <aura:attribute name="spinner" type="boolean" default="true"/>
+    <c:MS_ToastService type="{!v.type}" message="{!v.message}" aura:id="toastCmp"/>
+
+    <aura:if isTrue="{!v.spinner}">
+            <div aura:id="spinnerId" class="slds-spinner_container">
+                <div class="slds-spinner--brand  slds-spinner slds-spinner--large slds-is-relative" role="alert">
+                    <span class="slds-assistive-text">Loading...</span>
+                    <div class="slds-spinner__dot-a"></div>
+                    <div class="slds-spinner__dot-b"></div>
+                </div>
+            </div>
+    </aura:if>
+
+    <lightning:layout horizontalAlign="center" multipleRows="true">
+
+        <lightning:layoutItem size="10">
+            <aura:if isTrue="{!v.pricebookNameCard == 'Standard Price Book'}">
+                <lightning:card class="cards" title="Add Pricebook">
+                    <lightning:layout horizontalAlign="center" multipleRows="true">
+                        <lightning:layoutItem size="3"/>
+                        <lightning:layoutItem size="4">
+                            <div class="align-form slds-grid">
+                                <div style="width: 50%; padding: 5px;">
+                                    <lightning:input value="{!v.pricebookName}"
+                                                     placeholder="{!$Label.c.MS_PricebookName}"
+                                                     name="pricebookName"/>
+                                </div>
+                                <div style="width: 35%; padding: 5px;">
+                                    <lightning:select aura:id="chooseProducts" name="products">
+                                        <option value="">{!$Label.c.MS_ChooseProducts}</option>
+                                        <option value="All">{!$Label.c.MS_All}</option>
+                                        <option value="Custom">{!$Label.c.MS_CustomCheck}</option>
+                                    </lightning:select>
+                                </div>
+                                <div style="width: 15%; padding: 5px;">
+                                    <lightning:input value="{!v.percentageOfPromotion}"
+                                                     placeholder="1-99%"
+                                                     name="percentageOfPromotion"/>
+                                </div>
+                            </div>
+                        </lightning:layoutItem>
+
+                        <lightning:layoutItem size="2">
+                            <lightning:button label="{!$Label.c.MS_Add}" variant="brand"
+                                              class="slds-m-top--xx-small buttonPosition" onclick="{!c.addPricebook}"/>
+                        </lightning:layoutItem>
+                        <lightning:layoutItem size="3"/>
+                    </lightning:layout>
+                </lightning:card>
+            </aura:if>
+
+            <lightning:card class="cards" title="{!$Label.c.MS_AllProductsIn + ' ' + v.pricebookNameCard}">
+                <aura:if isTrue="{!v.pricebookNameCard != 'Standard Price Book'}">
+                    <lightning:layout horizontalAlign="center" multipleRows="true">
+                        <lightning:layoutItem size="3"/>
+                        <lightning:layoutItem size="4">
+                            <div class="align-form slds-grid">
+                                <div style="width: 50%; padding: 5px; text-align:right; margin-top: 25px;">
+                                    {!$Label.c.MS_EditPercentDiscount}
+                                </div>
+                                <div style="width: 35%; padding: 5px;">
+                                    <lightning:select aura:id="chooseProductsInPricebook" name="products">
+                                        <option value="">{!$Label.c.MS_ChooseProducts}</option>
+                                        <option value="All">{!$Label.c.MS_All}</option>
+                                        <option value="Custom">{!$Label.c.MS_CustomCheck}</option>
+                                    </lightning:select>
+                                </div>
+                                <div style="width: 15%; padding: 5px;">
+                                    <lightning:input value="{!v.percentageOfPromotionInPricebook}"
+                                                     placeholder="1-99%"
+                                                     name="percentageOfPromotion"/>
+                                </div>
+                            </div>
+                        </lightning:layoutItem>
+
+                        <lightning:layoutItem size="2">
+                            <lightning:button label="{!$Label.c.Edit}" variant="brand"
+                                              class="slds-m-top--xx-small buttonPosition"
+                                              onclick="{!c.editPercentsInPricebook}"/>
+                        </lightning:layoutItem>
+                        <lightning:layoutItem size="3"/>
+                    </lightning:layout>
+                </aura:if>
+                <lightning:layout verticalAlign="stretch" multipleRows="true">
+                    <aura:iteration items="{!v.searchedProducts.results}" var="product" indexVar="productIndex">
+                        <lightning:layoutItem size="2">
+                            <div id="{!product.Product2Id}" onclick="{!c.addProductsToPricebook}"
+                                 data-value="{!product.Product2Id}" data-index="{!productIndex}"
+                                 class="{!if(product.selected,'selectedProduct','')}">
+                                <c:MS_ProductDiscountTail pricebookName="{!v.pricebookNameCard}" product="{!product}"/>
+                            </div>
+                        </lightning:layoutItem>
+                    </aura:iteration>
+                </lightning:layout>
+            </lightning:card>
+
+        </lightning:layoutItem>
+
+        <lightning:layoutItem size="2">
+
+            <lightning:card class="cards" title="{!$Label.c.MS_AllPricebooks}">
+                <aura:iteration items="{!v.priceBooks.results}" var="pricebook">
+                    <div style="margin: 5px; border: 1px solid rgb(225,225,225); padding: 5px; font-size: 15px;">
+                        <lightning:layout verticalAlign="stretch" multipleRows="true">
+                            <lightning:layoutItem size="8">
+                                <p style="margin-top:2px;">{!pricebook.Name}</p>
+                            </lightning:layoutItem>
+                            <lightning:layoutItem size="4">
+                                <div class="slds-grid">
+                                    <div style="margin-left:5px; cursor: pointer;" onclick="{!c.showPricebookPrices}"
+                                         data-pricebookid="{!pricebook.Id}" data-pricebookname="{!pricebook.Name}">
+                                        <img style="height: 17px; width: 17px;" src="{! $Resource.MS_Home}"
+                                             title="{!$Label.c.MS_ShowPricebook}"/>
+                                    </div>
+                                    <aura:if isTrue="{!pricebook.Name != 'Standard Price Book'}">
+                                        <div style="margin-left:5px; cursor: pointer;" onclick="{!c.openManageProducts}"
+                                             data-pricebookid="{!pricebook.Id}">
+                                            <img style="height: 22px; width: 22px;"
+                                                 src="{! $Resource.MS_ManageProducts}" title="{!$Label.c.MS_ManageProducts}"/>
+                                        </div>
+                                        <div style="margin-left:5px; cursor: pointer;" onclick="{!c.openDeleteConfirm}"
+                                             data-pricebookid="{!pricebook.Id}" data-pricebookname="{!pricebook.Name}">
+                                            <img style="height: 17px; width: 17px;" src="{! $Resource.MS_Delete}"
+                                                 title="{!$Label.c.Delete}"/>
+                                        </div>
+
+                                    </aura:if>
+                                </div>
+                            </lightning:layoutItem>
+                        </lightning:layout>
+                    </div>
+                </aura:iteration>
+            </lightning:card>
+
+        </lightning:layoutItem>
+
+    </lightning:layout>
+
+    <aura:if isTrue="{!v.isManageProductsOpen}">
+
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+                 aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open slds-modal_medium">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <lightning:buttonIcon iconName="utility:close"
+                                          onclick="{! c.closeManageProducts }"
+                                          alternativeText="close"
+                                          variant="bare-inverse"
+                                          class="slds-modal__close"/>
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{!$Label.c.MS_ManageProductsof}
+                            {!v.pricebook.pricebookName}</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    <lightning:layout verticalAlign="stretch" multipleRows="true">
+                        <lightning:layoutItem size="12">
+                            <div class="slds-grid">{!$Label.c.MS_CheckToSelectAll}:
+                                <lightning:input checked="{!v.selectAll}" class="checkbox" type="checkbox"
+                                                 onchange="{!c.selectAll}">
+                                </lightning:input>
+                            </div>
+                        </lightning:layoutItem>
+                        <aura:iteration items="{!v.searchedProductsAll.results}" var="product" indexVar="productIndex">
+                            <lightning:layoutItem size="3">
+                                <div id="{!product.Product2Id + '1'}" onclick="{!c.addProductsToList}"
+                                     data-value="{!product.Product2Id}" data-index="{!productIndex}"
+                                     class="{!if(product.selected,'selectedProduct','')}">
+                                    <c:MS_ProductDiscountTail pricebookName="Standard Price Book" product="{!product}"/>
+                                </div>
+                            </lightning:layoutItem>
+                        </aura:iteration>
+                    </lightning:layout>
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning:button variant="neutral"
+                                      label="{!$Label.c.Cancel}"
+                                      title="{!$Label.c.Cancel}"
+                                      onclick="{! c.closeManageProducts }"/>
+                    <lightning:button variant="brand"
+                                      label="{!$Label.c.Save}"
+                                      title="{!$Label.c.Save}"
+                                      onclick="{!c.submit}"/>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </aura:if>
+
+    <aura:if isTrue="{!v.deleteConfirm}">
+
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+                 aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <lightning:buttonIcon iconName="utility:close"
+                                          onclick="{! c.closeManageProducts }"
+                                          alternativeText="close"
+                                          variant="bare-inverse"
+                                          class="slds-modal__close"/>
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{!$Label.c.Confirm_deletion}</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    Are You sure You want to delete <b>{!' ' + v.pricebookToDeleteName}</b>?
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning:button variant="neutral"
+                                      label="{!$Label.c.Cancel}"
+                                      title="{!$Label.c.Cancel}"
+                                      onclick="{! c.closeDeletionConfirm }"/>
+                    <lightning:button variant="brand"
+                                      label="{!$Label.c.Delete}"
+                                      title="{!$Label.c.Delete}"
+                                      onclick="{!c.submitDeleteConfirm}"/>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </aura:if>
+
+</aura:component>

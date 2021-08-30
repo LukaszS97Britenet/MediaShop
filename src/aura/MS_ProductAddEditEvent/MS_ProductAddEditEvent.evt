@@ -1,0 +1,2 @@
+<aura:event type="COMPONENT" description="MS_ProductAddEditEvent">
+</aura:event>
