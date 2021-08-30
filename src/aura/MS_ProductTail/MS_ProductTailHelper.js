@@ -14,6 +14,10 @@
             console.log('4');
             if(state === "SUCCESS") {
                 console.log(result);
+                var appEvent = $A.get("e.c:MS_CartProductsAmount");
+                appEvent.setParams({
+                    "amount" : 1 });
+                appEvent.fire();
                  component.set("v.type", 'Success');
                  component.set("v.message", 'Products added to cart successfully.');
                  component.find("toastCmp").toast();

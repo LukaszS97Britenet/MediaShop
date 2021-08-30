@@ -5,6 +5,7 @@
     <aura:attribute name="message" type="String"/>
     <aura:attribute name="type" type="String"/>
     <aura:attribute name="spinner" type="boolean" default="true"/>
+    <aura:registerEvent name="MS_CartProductsAmount" type="c:MS_CartProductsAmount"/>
     <c:MS_ToastService type="{!v.type}" message="{!v.message}" aura:id="toastCmp"/>
     <aura:attribute name="CurrentUser" type="Object"/>
     <force:recordData recordId="{!$SObjectType.CurrentUser.Id}"
