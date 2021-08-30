@@ -168,7 +168,7 @@
                         <img style="height: 80px; cursor: pointer;" src="{!$Resource.Santander}" onclick="{!c.checkImage}"/>
                     </lightning:layoutItem>
                     <lightning:layoutItem class="bankImg" size="4">
-                        <img style="height: 80px; cursor: pointer;" src="{!$Resource.IPKO}" class="boxShadow" onclick="{!c.checkImage}"/>
+                        <img style="height: 80px; cursor: pointer;" src="{!$Resource.IPKO}" onclick="{!c.checkImage}"/>
                     </lightning:layoutItem>
                 </lightning:layout>
 
