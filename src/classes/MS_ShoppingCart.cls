@@ -44,6 +44,20 @@ public with sharing class MS_ShoppingCart {
     }
 
     @AuraEnabled
+    public static Decimal getAmountOfProducts() {
+        String partitionInput = 'local.ShoppingCart';
+        String counterKeyInput = 'Cart';
+        Cache.SessionPartition sessionPartition = Cache.Session.getPartition(partitionInput);
+        String message = (String) sessionPartition.get(counterKeyInput);
+        Cart cartFromSession = (Cart) JSON.deserialize(message, Cart.class);
+        Decimal amount = 0;
+        for (Product product: cartFromSession.products) {
+            amount += product.quantity;
+        }
+        return amount;
+    }
+
+    @AuraEnabled
     public static Cart deleteProductFromCart(String id) {
         String partitionInput = 'local.ShoppingCart';
         String counterKeyInput = 'Cart';

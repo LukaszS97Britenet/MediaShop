@@ -16,8 +16,16 @@
 
     deleteProduct: function(component, event) {
         const action = component.get("c.deleteProductFromCart");
+        let amount = 0;
+        let idToDelete = component.get("v.deleteProductId");
+        let products = component.get("v.cart.products");
+        for(let index = 0; index<products.length; index++) {
+            if(products[index].product.Product2Id === idToDelete) {
+                amount = products[index].quantity;
+            }
+        }
         action.setParams({
-                    id : component.get("v.deleteProductId")
+                    id : idToDelete
                 });
         action.setCallback(this, function(response) {
             let state = response.getState();
@@ -29,6 +37,11 @@
                 component.find("toastCmp").toast();
                 component.set("v.deleteConfirm", false);
                 this.calculateTotalPrice(component);
+                var appEvent = $A.get("e.c:MS_CartProductsAmount");
+                appEvent.setParams({
+                    "amount" : amount*(-1)
+                    });
+                appEvent.fire();
                 component.set("v.spinner", false);
             }
         });
@@ -49,6 +62,11 @@
             if(state === "SUCCESS") {
                 component.set("v.cart", result);
                 this.calculateTotalPrice(component);
+                var appEvent = $A.get("e.c:MS_CartProductsAmount");
+                appEvent.setParams({
+                    "amount" : quantityChangeValue
+                    });
+                appEvent.fire();
                 component.set("v.spinner", false);
             }
         });

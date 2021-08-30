@@ -10,6 +10,7 @@
     <aura:attribute name="deleteConfirm" type="boolean" default="false"/>
     <aura:attribute name="deleteProductId" type="String" default="false"/>
     <aura:attribute name="productToDelete" type="String"/>
+    <aura:registerEvent name="MS_CartProductsAmount" type="c:MS_CartProductsAmount"/>
     <c:MS_ToastService type="{!v.type}" message="{!v.message}" aura:id="toastCmp"/>
 
     <aura:if isTrue="{!v.spinner}">

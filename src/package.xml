@@ -25,6 +25,7 @@
         <members>MS_ProgressBar</members>
         <members>MS_ToastService</members>
         <members>MS_ShoppingCart</members>
+        <members>MS_CartProductsAmount</members>
         <name>AuraDefinitionBundle</name>
     </types>
     <types>
