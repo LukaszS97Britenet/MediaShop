@@ -1,3 +1,76 @@
-<aura:component description="MS_OrderSubmit" controller="MS_OrderSubmit" implements="forceCommunity:availableForAllPageTypes">
+<aura:component description="MS_OrderSubmit" controller="MS_OrderSubmit" implements="flexipage:availableForAllPageTypes,force:appHostable,force:hasRecordId,forceCommunity:availableForAllPageTypes">
+
+    <aura:attribute name="cart" type="Object"/>
+    <aura:attribute name="totalPrice" type="Decimal"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="type" type="String"/>
+    <aura:attribute name="message" type="String"/>
+    <aura:attribute name="spinner" type="boolean" default="true"/>
+    <c:MS_ToastService type="{!v.type}" message="{!v.message}" aura:id="toastCmp"/>
+
+    <aura:if isTrue="{!v.spinner}">
+        <div aura:id="spinnerId" class="slds-spinner_container">
+            <div class="slds-spinner--brand  slds-spinner slds-spinner--large slds-is-relative" role="alert">
+                <span class="slds-assistive-text">Loading...</span>
+                <div class="slds-spinner__dot-a"></div>
+                <div class="slds-spinner__dot-b"></div>
+            </div>
+        </div>
+    </aura:if>
+
+    <lightning:layout horizontalAlign="center" multipleRows="true">
+        <lightning:layoutItem size="12">
+            <aura:if isTrue="{!not(empty(v.cart.products))}">
+
+                <aura:iteration items="{!v.cart.products}" var="product">
+                    <div class="slds-grid">
+                        <div style="width: 12%; height: 120px; border-bottom: 1px solid rgb(230,230,230)">
+                            <div style="padding: 4px;">
+                                <img class="image"
+                                     src="{!'/sfc/servlet.shepherd/document/download/' + product.product.Product2.MainImageId__c}"/>
+                            </div>
+                        </div>
+                        <div style="width: 28%; height: 120px; border-bottom: 1px solid rgb(230,230,230)"
+                             data-productid="{!product.product.Product2.Id}" onclick="{!c.productDetails}">
+                            <p style="margin-top: 40px; font-size: 20px; cursor: pointer;">{!product.product.Name}</p>
+                        </div>
+                        <div style="width: 20%; height: 120px; border-bottom: 1px solid rgb(230,230,230); text-align: center;">
+                            <p style="margin-top: 40px; font-size: 20px;">
+                                €{!' ' + product.quantity*product.product.UnitPrice}</p>
+                        </div>
+                        <div style="width: 35%; height: 120px; border-bottom: 1px solid rgb(230,230,230); text-align: center;">
+                            <div style="margin-top: 38px; font-size: 20px;">
+                                    Quantity: {!product.quantity}
+                            </div>
+                        </div>
+                        <div style="width: 5%; height: 120px; border-bottom: 1px solid rgb(230,230,230)">
+
+                        </div>
+                    </div>
+                </aura:iteration>
+
+                <div class="slds-grid">
+                    <div style="width: 40%; height: 120px; border-bottom: 1px solid rgb(230,230,230)">
+                    </div>
+                    <div style="width: 20%; height: 120px; border-bottom: 1px solid rgb(230,230,230)">
+                        <p style="margin-top: 40px; font-size: 20px; text-align: center;"><b>
+                            Total Price: €{!' ' + v.totalPrice}</b></p>
+                    </div>
+                    <div style="width: 40%; height: 120px; border-bottom: 1px solid rgb(230,230,230)">
+                        <lightning:button label="{!$Label.c.Next}" variant="brand"
+                                          class="slds-m-top--xx-small buttonPosition" onclick="{!c.launchFlow}"/>
+                    </div>
+                </div>
+
+                <aura:set attribute="else">
+                    <div style="width: 100%; text-align:center; height: 90px; border-bottom: 1px solid rgb(230,230,230)">
+                        <p style="margin-top: 40px; font-size: 20px;">{!$Label.c.MS_EmptyCart}</p>
+                    </div>
+                </aura:set>
+
+            </aura:if>
+
+        </lightning:layoutItem>
+    </lightning:layout>
 
 </aura:component>
