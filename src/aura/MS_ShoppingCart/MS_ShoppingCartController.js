@@ -44,6 +44,8 @@
     launchFlow: function(component, event, helper) {
          var appEvent = $A.get("e.c:MS_CloseCart");
          appEvent.fire();
+         var appEvent = $A.get("e.c:MS_CreateOrderEvent");
+        appEvent.fire();
         var address = '/s/submitorder';
         var urlEvent = $A.get("e.force:navigateToURL");
         urlEvent.setParams({

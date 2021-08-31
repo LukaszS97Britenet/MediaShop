@@ -12,6 +12,7 @@
     <aura:attribute name="productToDelete" type="String"/>
     <aura:registerEvent name="MS_CartProductsAmount" type="c:MS_CartProductsAmount"/>
     <aura:registerEvent name="MS_CloseCart" type="c:MS_CloseCart"/>
+    <aura:registerEvent name="MS_CreateOrderEvent" type="c:MS_CreateOrderEvent"/>
     <c:MS_ToastService type="{!v.type}" message="{!v.message}" aura:id="toastCmp"/>
 
     <aura:if isTrue="{!v.spinner}">
