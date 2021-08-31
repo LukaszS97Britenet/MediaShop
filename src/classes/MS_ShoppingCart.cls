@@ -35,8 +35,20 @@ public with sharing class MS_ShoppingCart {
 
     @AuraEnabled
     public static Cart getCart() {
-        Order ord = [SELECT Id FROM Order WHERE OwnerId =: UserInfo.getUserId() AND Status = 'Draft' LIMIT 1];
-        List<OrderItem> items = [SELECT Id, UnitPrice, Quantity, Product2Id, PricebookEntryId FROM OrderItem WHERE OrderId =: ord.Id];
+        System.debug(UserInfo.getUserId());
+        Order orderItem = [SELECT Id, OwnerId FROM Order WHERE OwnerId =: UserInfo.getUserId() AND Status = 'Draft' LIMIT 1];
+        System.debug(orderItem);
+        List<OrderItem> items = [SELECT Id, UnitPrice, Quantity, Product2Id, PricebookEntryId FROM OrderItem WHERE OrderId =: orderItem.Id ORDER BY CreatedDate];
+        System.debug(items);
+        PricebookEntry priceEnt;
+        for(OrderItem ord : items) {
+            System.debug('################');
+            priceEnt = new PricebookEntry();
+            priceEnt.Id = ord.PricebookEntryId;
+            priceEnt.UnitPrice = ord.UnitPrice;
+            priceEnt.Product2Id = ord.Product2Id;
+            addToCart(priceEnt, String.valueOf(ord.Quantity));
+        }
         String partitionInput = 'local.ShoppingCart';
         String counterKeyInput = 'Cart';
         Cache.SessionPartition sessionPartition = Cache.Session.getPartition(partitionInput);
