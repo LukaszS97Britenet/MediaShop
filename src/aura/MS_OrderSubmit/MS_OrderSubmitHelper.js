@@ -52,6 +52,7 @@
         action.setCallback(this, function(response) {
             let state = response.getState();
             let result = response.getReturnValue();
+            console.log('createOrderHelper');
             if(state === "SUCCESS") {
                 console.log(result);
                 component.set("v.orderId", result);
