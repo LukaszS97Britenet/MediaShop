@@ -53,8 +53,8 @@
             let state = response.getState();
             let result = response.getReturnValue();
             if(state === "SUCCESS") {
+                console.log(result);
                 component.set("v.orderId", result);
-
             }
         });
         $A.enqueueAction(action);

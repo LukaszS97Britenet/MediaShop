@@ -1,6 +1,9 @@
 ({
     doInit: function(component, event, helper) {
         helper.getCart(component);
+    },
+
+    createOrder: function(component, event, helper) {
         helper.createOrder(component);
     },
 
