@@ -2,6 +2,7 @@
     doInit: function(component, event, helper) {
         helper.getCart(component);
         helper.createOrder(component);
+        helper.getOrderDetails(component);
     },
 
     productDetails: function(component, event, helper) {
@@ -34,7 +35,7 @@
     },
 
     submitDetails: function(component, event, helper) {
-        helper.submitOrder(component, event, helper);
+        component.set("v.isModalOpen", true);
     },
 
     checkImage: function(component, event, helper) {
@@ -50,12 +51,20 @@
          image.classList.add("boxShadow");
     },
 
+    closeModel: function(component, event, helper) {
+       component.set("v.isModalOpen", false);
+    },
+
+    submit: function(component, event, helper) {
+        helper.submitOrder(component, event, helper);
+    },
+
     submitSecondScreen: function(component, event, helper) {
         if(component.get("v.street") !== '' || component.get("v.country") !== '' || component.get("v.city") !== '' || component.get("v.postalCode") !== '' || component.get("v.state") !== '') {
             component.set("v.paymentMethod", component.find("paymentMethod").get("v.value"));
             component.set("v.deliveryMethod", component.find("deliveryMethod").get("v.value"));
             if(component.find("paymentMethod").get("v.value") === 'Cash') {
-                helper.submitOrder(component, event, helper);
+                component.set("v.confirmOrder", true);
             } else if (component.find("paymentMethod").get("v.value") === 'Card') {
                 component.set("v.firstScreen", false);
                 component.set("v.secondScreen", false);

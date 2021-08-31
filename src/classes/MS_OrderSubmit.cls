@@ -31,7 +31,6 @@ public with sharing class MS_OrderSubmit {
 
     @AuraEnabled
     public static Id createOrder() {
-        System.debug('createORder');
         Cart shoppingCart = getCart();
         String partitionInput = 'local.ShoppingCart';
         String counterKeyInput = 'Cart';
@@ -44,9 +43,7 @@ public with sharing class MS_OrderSubmit {
         newOrder.EffectiveDate = Date.today();
         newOrder.BillToContactId = [SELECT ContactId FROM User WHERE Id =: UserInfo.getUserId() LIMIT 1].ContactId;
         newOrder.Pricebook2Id = shoppingCart.products.get(0).product.Pricebook2Id;
-        System.debug(newOrder);
         insert newOrder;
-        System.debug(newOrder);
         List<OrderItem> items = new List<OrderItem>();
         OrderItem item;
         for(Product prod : shoppingCart.products) {
@@ -59,8 +56,20 @@ public with sharing class MS_OrderSubmit {
             items.add(item);
         }
         insert items;
-        System.debug(items);
         return newOrder.Id;
+    }
+
+    @AuraEnabled
+    public static OrderWrapper getContactDetails() {
+        OrderWrapper orderWrapper = new OrderWrapper();
+        String idContact = [SELECT ContactId FROM User WHERE Id = :UserInfo.getUserId() LIMIT 1].ContactId;
+        Contact contact = [SELECT OtherPostalCode, OtherStreet, OtherCountry, OtherCity, OtherState FROM Contact WHERE id = :idContact LIMIT 1];
+        orderWrapper.city = contact.OtherCity;
+        orderWrapper.state = contact.OtherState;
+        orderWrapper.street = contact.OtherStreet;
+        orderWrapper.postalCode = contact.OtherPostalCode;
+        orderWrapper.country = contact.OtherCountry;
+        return orderWrapper;
     }
 
     public class Product {
@@ -77,13 +86,13 @@ public with sharing class MS_OrderSubmit {
     }
 
     public class OrderWrapper {
-        public String orderId;
-        public String street;
-        public String city;
-        public String state;
-        public String postalCode;
-        public String country;
-        public String paymentMethod;
-        public String deliveryMethod;
+        @AuraEnabled public String orderId;
+        @AuraEnabled public String street;
+        @AuraEnabled public String city;
+        @AuraEnabled public String state;
+        @AuraEnabled public String postalCode;
+        @AuraEnabled public String country;
+        @AuraEnabled public String paymentMethod;
+        @AuraEnabled public String deliveryMethod;
     }
 }

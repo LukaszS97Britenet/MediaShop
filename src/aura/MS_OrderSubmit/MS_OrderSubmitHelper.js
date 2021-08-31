@@ -14,6 +14,25 @@
         $A.enqueueAction(action);
     },
 
+    getOrderDetails: function(component) {
+        const action = component.get("c.getContactDetails");
+        action.setCallback(this, function(response) {
+            let state = response.getState();
+            let result = response.getReturnValue();
+            console.log(result);
+            if(state === "SUCCESS") {
+                component.set("v.street", result.street);
+                component.set("v.city", result.city);
+                component.set("v.state", result.state);
+                component.set("v.postalCode", result.postalCode);
+                component.set("v.country", result.country);
+                component.set("v.spinner", false);
+            }
+            component.set("v.spinner", false);
+        });
+        $A.enqueueAction(action);
+    },
+
     calculateTotalPrice: function(component) {
         let products = component.get("v.cart.products");
         let totalPrice = 0;
@@ -45,6 +64,7 @@
                 component.set("v.type", 'Success');
                 component.set("v.message", 'Order placed positively!');
                 component.find("toastCmp").toast();
+                component.set("v.isModalOpen", false);
                 var address = '/s/search-products';
                 var urlEvent = $A.get("e.force:navigateToURL");
                 urlEvent.setParams({
