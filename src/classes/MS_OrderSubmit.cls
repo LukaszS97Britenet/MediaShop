@@ -33,6 +33,10 @@ public with sharing class MS_OrderSubmit {
     public static Id createOrder() {
         System.debug('createORder');
         Cart shoppingCart = getCart();
+        String partitionInput = 'local.ShoppingCart';
+        String counterKeyInput = 'Cart';
+        Cache.SessionPartition sessionPartition = Cache.Session.getPartition(partitionInput);
+        sessionPartition.put(counterKeyInput, JSON.serialize(new Cart()));
         Order newOrder = new Order();
         newOrder.Status = 'Draft';
         newOrder.OwnerId = UserInfo.getUserId();
