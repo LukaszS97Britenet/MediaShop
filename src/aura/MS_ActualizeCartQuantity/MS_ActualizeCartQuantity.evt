@@ -1,0 +1,2 @@
+<aura:event type="APPLICATION" description="MS_ActualizeCartQuantity">
+</aura:event>

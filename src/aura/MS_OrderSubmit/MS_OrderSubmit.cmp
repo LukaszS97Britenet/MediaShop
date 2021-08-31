@@ -20,6 +20,7 @@
     <aura:attribute name="paymentMethod" type="String" default=""/>
     <aura:attribute name="deliveryMethod" type="String" default=""/>
     <aura:attribute name="confirmOrder" type="Boolean" default="false"/>
+    <aura:registerEvent name="MS_ActualizeCartQuantity" type="c:MS_ActualizeCartQuantity"/>
 
     <aura:if isTrue="{!v.spinner}">
         <div aura:id="spinnerId" class="slds-spinner_container">
@@ -42,7 +43,7 @@
                         </div>
                         <div style="width: 20%; height: 120px; border-bottom: 1px solid rgb(230,230,230)">
                             <p style="margin-top: 40px; font-size: 20px; text-align: center;"><b>
-                                Order Details:</b></p>
+                                {!$Label.c.Order_Details}:</b></p>
                         </div>
                         <div style="width: 40%; height: 120px; border-bottom: 1px solid rgb(230,230,230)">
                         </div>
@@ -112,7 +113,7 @@
                     </div>
                     <div style="width: 20%; height: 120px; border-bottom: 1px solid rgb(230,230,230)">
                         <p style="margin-top: 40px; font-size: 20px; text-align: center;"><b>
-                            Address and Delivery Method</b></p>
+                            {!$Label.c.Address_and_Delivery_Method}</b></p>
                     </div>
                     <div style="width: 40%; height: 120px; border-bottom: 1px solid rgb(230,230,230)">
                     </div>
@@ -233,7 +234,7 @@
                     </div>
                     <div style="width: 20%; height: 120px; border-bottom: 1px solid rgb(230,230,230)">
                         <p style="margin-top: 40px; font-size: 20px; text-align: center;"><b>
-                            Select Bank:</b></p>
+                            {!$Label.c.Select_Bank}:</b></p>
                     </div>
                     <div style="width: 40%; height: 120px; border-bottom: 1px solid rgb(230,230,230)">
                     </div>
@@ -280,7 +281,7 @@
 
                     </div>
                     <div style="width: 10%; height: 120px; border-bottom: 1px solid rgb(230,230,230)">
-                        <lightning:button label="{!$Label.c.MS_Finish}" variant="brand"
+                        <lightning:button label="{!$Label.c.Next}" variant="brand"
                                           class="slds-m-top--xx-small thirdButtonPosition"
                                           onclick="{!c.submitDetails}"/>
                     </div>
@@ -303,20 +304,20 @@
                                           alternativeText="close"
                                           variant="bare-inverse"
                                           class="slds-modal__close"/>
-                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Modal/PopUp Box</h2>
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{!$Label.c.Confirm_Order}</h2>
                 </header>
                 <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
-                    <p>Are You sure that You want to finalize order?
+                    <p>{!$Label.c.Finalize_Order}
                     </p>
                 </div>
                 <footer class="slds-modal__footer">
                     <lightning:button variant="neutral"
-                                      label="Cancel"
-                                      title="Cancel"
+                                      label="{!$Label.c.Cancel}"
+                                      title="{!$Label.c.Cancel}"
                                       onclick="{! c.closeModel }"/>
                     <lightning:button variant="brand"
-                                      label="OK"
-                                      title="OK"
+                                      label="{!$Label.c.MS_Finish}"
+                                      title="{!$Label.c.MS_Finish}"
                                       onclick="{!c.submit}"/>
                 </footer>
             </div>

@@ -35,7 +35,7 @@
     },
 
     submitDetails: function(component, event, helper) {
-        component.set("v.isModalOpen", true);
+        component.set("v.confirmOrder", true);
     },
 
     checkImage: function(component, event, helper) {
@@ -52,7 +52,7 @@
     },
 
     closeModel: function(component, event, helper) {
-       component.set("v.isModalOpen", false);
+       component.set("v.confirmOrder", false);
     },
 
     submit: function(component, event, helper) {
@@ -70,13 +70,13 @@
                 component.set("v.secondScreen", false);
                 component.set("v.thirdScreen", true);
             } else {
-                component.set("v.type", 'Error');
-                component.set("v.message", 'Select paymentMethod!');
+                component.set("v.type", $A.get("$Label.c.ErrorLabel"));
+                component.set("v.message", $A.get("$Label.c.Select_paymentMethod"));
                 component.find("toastCmp").toast();
             }
         } else {
-            component.set("v.type", 'Error');
-            component.set("v.message", 'Fill required fields!');
+            component.set("v.type", $A.get("$Label.c.ErrorLabel"));
+            component.set("v.message", $A.get("$Label.c.Fill_Required"));
             component.find("toastCmp").toast();
         }
     }

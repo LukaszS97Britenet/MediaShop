@@ -26,6 +26,7 @@
         <members>MS_ToastService</members>
         <members>MS_OrderSubmit</members>
         <members>MS_CreateOrderEvent</members>
+        <members>MS_ActualizeCartQuantity</members>
         <name>AuraDefinitionBundle</name>
     </types>
     <types>
