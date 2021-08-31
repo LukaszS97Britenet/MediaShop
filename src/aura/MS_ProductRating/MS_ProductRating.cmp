@@ -1,0 +1,10 @@
+<aura:component description="MS_ProductRating" implements="flexipage:availableForAllPageTypes,force:appHostable,force:hasRecordId,forceCommunity:availableForAllPageTypes">
+    <aura:attribute name="CurrentUser" type="Object"/>
+    <force:recordData recordId="{!$SObjectType.CurrentUser.Id}"
+                      fields="Profile.Name"
+                      targetFields="{!v.CurrentUser}"/>
+    <aura:if isTrue="{!v.CurrentUser.Profile.Name == 'Customer Community'}">
+        <c:MS_Rating productId="{!v.recordId}"/>
+    </aura:if>
+
+</aura:component>
