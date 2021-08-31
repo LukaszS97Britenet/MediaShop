@@ -8,6 +8,7 @@
     },
 
     getProductsAmount : function(component, event) {
+        console.log('przeliczam');
         let amount = parseInt(component.get("v.amount"),10) + parseInt(event.getParam("amount"),10);
         component.set("v.amount", amount);
         console.log(component.get("v.amount"));
