@@ -1,10 +1,6 @@
 ({
     doInit: function(component, event, helper) {
         helper.getCart(component);
-    },
-
-    insertOrder: function(component, event, helper) {
-        console.log('createOrder');
         helper.createOrder(component);
     },
 

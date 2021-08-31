@@ -28,6 +28,7 @@
         const action = component.get("c.submitOrder");
         action.setParams({
             payloadJson: JSON.stringify({
+                orderId: component.get("v.orderId"),
                 street: component.get("v.street"),
                 city: component.get("v.city"),
                 state: component.get("v.state"),
@@ -41,7 +42,9 @@
             let state = response.getState();
             let result = response.getReturnValue();
             if(state === "SUCCESS") {
-
+                component.set("v.type", 'Success');
+                component.set("v.message", 'Order placed positively!');
+                component.find("toastCmp").toast();
             }
         });
         $A.enqueueAction(action);

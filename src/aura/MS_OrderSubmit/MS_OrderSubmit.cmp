@@ -19,7 +19,6 @@
     <aura:attribute name="country" type="String" default=""/>
     <aura:attribute name="paymentMethod" type="String" default=""/>
     <aura:attribute name="deliveryMethod" type="String" default=""/>
-    <aura:handler event="c:MS_CreateOrderEvent" action="{!c.insertOrder}"/>
 
     <aura:if isTrue="{!v.spinner}">
         <div aura:id="spinnerId" class="slds-spinner_container">
