@@ -2,6 +2,8 @@ public with sharing class MS_ShoppingCart {
 
     @AuraEnabled
     public static Boolean addToCart(PricebookEntry product, String quantity) {
+        System.debug(product);
+        System.debug(quantity);
         try {
             Product productWrapper = new Product();
             productWrapper.product = product;
@@ -14,7 +16,7 @@ public with sharing class MS_ShoppingCart {
                 Cart cartFromSession = (Cart) JSON.deserialize(message, Cart.class);
                 for(Product productFromCart : cartFromSession.products) {
                     if(productFromCart.product.Product2Id == productWrapper.product.Product2Id) {
-                        productFromCart.quantity += 1;
+                        productFromCart.quantity += Decimal.valueOf(quantity);
                         sessionPartition.put(counterKeyInput, JSON.serialize(cartFromSession));
                         return true;
                     }
@@ -35,20 +37,29 @@ public with sharing class MS_ShoppingCart {
 
     @AuraEnabled
     public static Cart getCart() {
-        System.debug(UserInfo.getUserId());
-        Order orderItem = [SELECT Id, OwnerId FROM Order WHERE OwnerId =: UserInfo.getUserId() AND Status = 'Draft' LIMIT 1];
-        System.debug(orderItem);
-        List<OrderItem> items = [SELECT Id, UnitPrice, Quantity, Product2Id, PricebookEntryId FROM OrderItem WHERE OrderId =: orderItem.Id ORDER BY CreatedDate];
-        System.debug(items);
-        PricebookEntry priceEnt;
-        for(OrderItem ord : items) {
-            System.debug('################');
-            priceEnt = new PricebookEntry();
-            priceEnt.Id = ord.PricebookEntryId;
-            priceEnt.UnitPrice = ord.UnitPrice;
-            priceEnt.Product2Id = ord.Product2Id;
-            addToCart(priceEnt, String.valueOf(ord.Quantity));
+            try {
+            Order orderItem = [SELECT Id, OwnerId FROM Order WHERE OwnerId =: UserInfo.getUserId() AND Status = 'Draft' ORDER BY CreatedDate DESC LIMIT 1];
+            List<OrderItem> items = [SELECT Id, UnitPrice, Quantity, Product2Id, PricebookEntry.Pricebook2Id, Product2.Name, Product2.MainImageId__c FROM OrderItem WHERE OrderId =: orderItem.Id];
+            PricebookEntry priceEnt;
+            for(OrderItem ord : items) {
+                System.debug(ord.Product2.Name);
+                priceEnt = new PricebookEntry();
+                Product2 prod = new Product2();
+                prod.Name = ord.Product2.Name;
+                prod.MainImageId__c = ord.Product2.MainImageId__c;
+                priceEnt.Product2Id = ord.Product2Id;
+                priceEnt.UnitPrice = ord.UnitPrice;
+                priceEnt.Pricebook2Id = ord.PricebookEntry.Pricebook2Id;
+                priceEnt.Id = ord.PricebookEntryId;
+                priceEnt.Product2 = prod;
+                addToCart(priceEnt, String.valueOf(ord.Quantity));
+            }
+            delete items;
+            delete orderItem;
+        } catch (Exception e) {
+            System.debug(e.getMessage());
         }
+
         String partitionInput = 'local.ShoppingCart';
         String counterKeyInput = 'Cart';
         Cache.SessionPartition sessionPartition = Cache.Session.getPartition(partitionInput);
