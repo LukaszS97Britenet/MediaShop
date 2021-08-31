@@ -1,0 +1,47 @@
+<aura:component description="MS_ProductTail" controller="MS_ShoppingCart"
+                implements="forceCommunity:availableForAllPageTypes,flexipage:availableForAllPageTypes">
+
+    <aura:attribute name="product" type="Object"/>
+    <aura:attribute name="message" type="String"/>
+    <aura:attribute name="type" type="String"/>
+    <aura:attribute name="spinner" type="boolean" default="true"/>
+    <aura:registerEvent name="MS_CartProductsAmount" type="c:MS_CartProductsAmount"/>
+    <c:MS_ToastService type="{!v.type}" message="{!v.message}" aura:id="toastCmp"/>
+    <aura:attribute name="CurrentUser" type="Object"/>
+    <force:recordData recordId="{!$SObjectType.CurrentUser.Id}"
+                      fields="Profile.Name"
+                      targetFields="{!v.CurrentUser}"/>
+
+    <div class="tail" style="height: 190px; background-color: white;">
+        <aura:if isTrue="{!not(empty(v.product.Product2.MainImageId__c))}">
+            <div style="text-align: center">
+                <img style="max-height: 146px; min-height: 146px;"
+                     src="{!'/sfc/servlet.shepherd/document/download/' + v.product.Product2.MainImageId__c}"
+                     alt="{!v.product.Name}"/>
+            </div>
+            <div class="slds-grid">
+                <div class="tailTitle" style="width: 30%;">
+
+                </div>
+                <div class="tailTitle" onclick="{!c.productDetails}"
+                     style="max-height:50px; width: 40%; background-color: rgb(230, 230, 230);">
+                {!v.product.Name}<br/>Cost: €{!v.product.UnitPrice}.00
+                </div>
+                <div class="tailTitle" style="width: 30%; padding-top: 10px; padding-left: 40px;">
+                    <aura:if isTrue="{!v.CurrentUser.Profile.Name == 'Customer Community'}">
+                        <img style="height: 25px; width: 25px; cursor: pointer;" title="Add To Cart"
+                             src="{! $Resource.MS_Cart}" onclick="{!c.addToShoppingCart}"/>
+                    </aura:if>
+                </div>
+            </div>
+            <aura:set attribute="else">
+                <img style="max-height: 146px; min-height: 146px;" src="{!$Resource.MS_DefaultPhotoImage}"
+                     alt="{!v.product.Name}"/>
+                <div class="tailTitle" style="max-height:50px;">
+                {!v.product.Name}<br/>{!$Label.c.MS_Price}: €{!v.product.UnitPrice}.00
+                </div>
+            </aura:set>
+        </aura:if>
+    </div>
+
+</aura:component>

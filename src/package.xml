@@ -4,6 +4,7 @@
         <members>MS_DiscountManager</members>
         <members>MS_RegisterHandler</members>
         <members>MS_ProductImages</members>
+        <members>MS_Product2Service</members>
         <name>ApexClass</name>
     </types>
     <types>
@@ -26,6 +27,9 @@
         <members>MS_ToastService</members>
         <members>MS_CarouselGallery</members>
         <members>MS_ProductImage</members>
+        <members>MS_ProductSearch</members>
+        <members>MS_ProductTail</members>
+        <members>MS_CartProductsAmount</members>
         <name>AuraDefinitionBundle</name>
     </types>
     <types>

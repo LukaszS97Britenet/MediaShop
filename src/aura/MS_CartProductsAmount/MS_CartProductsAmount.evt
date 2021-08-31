@@ -1,0 +1,3 @@
+<aura:event type="APPLICATION" description="MS_CartProductsAmount">
+    <aura:attribute name="amount" type="Decimal"/>
+</aura:event>

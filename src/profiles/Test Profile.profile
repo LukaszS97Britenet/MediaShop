@@ -4,6 +4,10 @@
         <apexClass>MS_DiscountManager</apexClass>
         <enabled>false</enabled>
     </classAccesses>
+      <classAccesses>
+        <apexClass>MS_Product2Service</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
     <classAccesses>
         <apexClass>MS_ProductImages</apexClass>
         <enabled>true</enabled>
