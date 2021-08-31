@@ -3,7 +3,7 @@
         helper.getCart(component);
     },
 
-    createOrder: function(component, event, helper) {
+    insertOrder: function(component, event, helper) {
         console.log('createOrder');
         helper.createOrder(component);
     },
