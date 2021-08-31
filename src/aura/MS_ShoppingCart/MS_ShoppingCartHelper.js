@@ -5,6 +5,7 @@
             let state = response.getState();
             let result = response.getReturnValue();
             if(state === "SUCCESS") {
+                console.log(result);
                 component.set("v.cart", result);
                 this.calculateTotalPrice(component);
                 component.set("v.spinner", false);

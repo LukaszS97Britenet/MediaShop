@@ -2,8 +2,6 @@ public with sharing class MS_ShoppingCart {
 
     @AuraEnabled
     public static Boolean addToCart(PricebookEntry product, String quantity) {
-        System.debug(product);
-        System.debug(quantity);
         try {
             Product productWrapper = new Product();
             productWrapper.product = product;
@@ -30,7 +28,6 @@ public with sharing class MS_ShoppingCart {
             }
             return true;
         } catch (Exception e) {
-            System.debug(e.getMessage());
             return false;
         }
     }
@@ -42,11 +39,11 @@ public with sharing class MS_ShoppingCart {
             List<OrderItem> items = [SELECT Id, UnitPrice, Quantity, Product2Id, PricebookEntry.Pricebook2Id, Product2.Name, Product2.MainImageId__c FROM OrderItem WHERE OrderId =: orderItem.Id];
             PricebookEntry priceEnt;
             for(OrderItem ord : items) {
-                System.debug(ord.Product2.Name);
                 priceEnt = new PricebookEntry();
                 Product2 prod = new Product2();
                 prod.Name = ord.Product2.Name;
                 prod.MainImageId__c = ord.Product2.MainImageId__c;
+                prod.Id = ord.Product2Id;
                 priceEnt.Product2Id = ord.Product2Id;
                 priceEnt.UnitPrice = ord.UnitPrice;
                 priceEnt.Pricebook2Id = ord.PricebookEntry.Pricebook2Id;
