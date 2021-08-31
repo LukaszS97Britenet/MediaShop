@@ -42,6 +42,7 @@ public with sharing class MS_OrderSubmit {
         newOrder.Pricebook2Id = shoppingCart.products.get(0).product.Pricebook2Id;
         System.debug(newOrder);
         insert newOrder;
+        System.debug(newOrder);
         List<OrderItem> items = new List<OrderItem>();
         OrderItem item;
         for(Product prod : shoppingCart.products) {
