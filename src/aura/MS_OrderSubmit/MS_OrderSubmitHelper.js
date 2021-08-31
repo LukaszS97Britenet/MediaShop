@@ -45,6 +45,13 @@
                 component.set("v.type", 'Success');
                 component.set("v.message", 'Order placed positively!');
                 component.find("toastCmp").toast();
+                var address = '/s/search-products';
+                var urlEvent = $A.get("e.force:navigateToURL");
+                urlEvent.setParams({
+                  "url": address,
+                  "isredirect" :false
+                });
+                urlEvent.fire();
             }
         });
         $A.enqueueAction(action);
