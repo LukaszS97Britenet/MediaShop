@@ -1,18 +1,14 @@
 ({
     getCart: function(component) {
-        console.log('1');
         const action = component.get("c.getCart");
-                console.log('2');
         action.setCallback(this, function(response) {
             let state = response.getState();
             let result = response.getReturnValue();
-            console.log(result);
             if(state === "SUCCESS") {
                 component.set("v.cart", result);
                 this.calculateTotalPrice(component);
                 component.set("v.spinner", false);
             }
-            console.log('3');
             component.set("v.spinner", false);
         });
         $A.enqueueAction(action);
@@ -26,5 +22,41 @@
             totalPrice += products[index].quantity*products[index].product.UnitPrice;
         }
         component.set("v.totalPrice", totalPrice);
+    },
+
+    submitOrder: function(component, event, helper) {
+        const action = component.get("c.submitOrder");
+        action.setParams({
+            payloadJson: JSON.stringify({
+                street: component.get("v.street"),
+                city: component.get("v.city"),
+                state: component.get("v.state"),
+                postalCode: component.get("v.postalCode"),
+                country: component.get("v.country"),
+                paymentMethod: component.get("v.paymentMethod"),
+                deliveryMethod: component.get("v.deliveryMethod")
+            })
+        });
+        action.setCallback(this, function(response) {
+            let state = response.getState();
+            let result = response.getReturnValue();
+            if(state === "SUCCESS") {
+
+            }
+        });
+        $A.enqueueAction(action);
+    },
+
+    createOrder: function(component) {
+        const action = component.get("c.createOrder");
+        action.setCallback(this, function(response) {
+            let state = response.getState();
+            let result = response.getReturnValue();
+            if(state === "SUCCESS") {
+                component.set("v.orderId", result);
+
+            }
+        });
+        $A.enqueueAction(action);
     }
 })

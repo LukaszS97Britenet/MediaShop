@@ -11,8 +11,14 @@
     <aura:attribute name="message" type="String"/>
     <aura:attribute name="spinner" type="boolean" default="true"/>
     <c:MS_ToastService type="{!v.type}" message="{!v.message}" aura:id="toastCmp"/>
-    <aura:attribute name="paymentMethod" type="String"/>
-    <aura:attribute name="bankName" type="String"/>
+    <aura:attribute name="orderId" type="String"/>
+    <aura:attribute name="street" type="String" default=""/>
+    <aura:attribute name="city" type="String" default=""/>
+    <aura:attribute name="state" type="String" default=""/>
+    <aura:attribute name="postalCode" type="String" default=""/>
+    <aura:attribute name="country" type="String" default=""/>
+    <aura:attribute name="paymentMethod" type="String" default=""/>
+    <aura:attribute name="deliveryMethod" type="String" default=""/>
 
     <aura:if isTrue="{!v.spinner}">
         <div aura:id="spinnerId" class="slds-spinner_container">
@@ -111,6 +117,86 @@
                     </div>
                 </div>
 
+                <lightning:layout horizontalAlign="center" multipleRows="true">
+                    <lightning:layoutItem size="1">
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="4">
+
+                        <lightning:input value="{!v.street}"
+                                         placeholder="{!$Label.c.Street}"
+                                         name="Street" label="{!$Label.c.Street}"/>
+
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="2">
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="4">
+
+                        <lightning:input value="{!v.city}"
+                                         placeholder="{!$Label.c.City}"
+                                         name="City" label="{!$Label.c.City}"/>
+
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="1">
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="1">
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="4">
+
+                        <lightning:input value="{!v.state}"
+                                         placeholder="{!$Label.c.State}"
+                                         name="State" label="{!$Label.c.State}"/>
+
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="2">
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="4">
+
+                        <lightning:input value="{!v.postalCode}"
+                                         placeholder="{!$Label.c.Postal_Code}"
+                                         name="PostalCode" label="{!$Label.c.Postal_Code}"/>
+
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="1">
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="1">
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="4">
+
+                        <lightning:input value="{!v.country}"
+                                         placeholder="{!$Label.c.Country}"
+                                         name="Street" label="{!$Label.c.Country}"/>
+
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="2">
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="4">
+
+                        <lightning:select aura:id="paymentMethod" name="products" label="{!$Label.c.Payment_Method}">
+                            <option value="Cash">{!$Label.c.Cash}</option>
+                            <option value="Card">{!$Label.c.Card}</option>
+                        </lightning:select>
+
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="1">
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="1">
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="4">
+
+                        <lightning:select aura:id="deliveryMethod" name="products" label="{!$Label.c.DeliveryMethod}">
+                            <option value="DeliveryMan">{!$Label.c.DeliveryMan}</option>
+                            <option value="PickUpPerson">{!$Label.c.PickupInPerson}</option>
+                        </lightning:select>
+
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="2">
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="4">
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="1">
+                    </lightning:layoutItem>
+                </lightning:layout>
+
                 <div class="slds-grid">
                     <div style="width: 39%; height: 120px; border-bottom: 1px solid rgb(230,230,230)">
                     </div>
@@ -125,7 +211,7 @@
                     <div style="width: 10%; height: 120px; border-bottom: 1px solid rgb(230,230,230)">
                         <lightning:button label="{!$Label.c.Next}" variant="brand"
                                           class="slds-m-top--xx-small thirdButtonPosition"
-                                          onclick="{!c.showThirdScreen}"/>
+                                          onclick="{!c.submitSecondScreen}"/>
                     </div>
                     <div style="width: 39%; height: 120px; border-bottom: 1px solid rgb(230,230,230)">
                     </div>
@@ -146,29 +232,35 @@
                     </div>
                     <div style="width: 20%; height: 120px; border-bottom: 1px solid rgb(230,230,230)">
                         <p style="margin-top: 40px; font-size: 20px; text-align: center;"><b>
-                            Payment Details:</b></p>
+                            Select Bank:</b></p>
                     </div>
                     <div style="width: 40%; height: 120px; border-bottom: 1px solid rgb(230,230,230)">
                     </div>
                 </div>
                 <lightning:layout horizontalAlign="center" multipleRows="true">
                     <lightning:layoutItem class="bankImg" size="4">
-                        <img style="height: 80px; cursor: pointer;" src="{!$Resource.ING}" onclick="{!c.checkImage}"/>
+                        <img id="ING" class="bankImage" src="{!$Resource.ING}" onclick="{!c.checkImage}"
+                             data-value="ING"/>
                     </lightning:layoutItem>
                     <lightning:layoutItem class="bankImg" size="4">
-                        <img style="height: 80px; cursor: pointer;" src="{!$Resource.Alior}" onclick="{!c.checkImage}"/>
+                        <img id="Alior" class="bankImage" src="{!$Resource.Alior}" onclick="{!c.checkImage}"
+                             data-value="Alior"/>
                     </lightning:layoutItem>
                     <lightning:layoutItem class="bankImg" size="4">
-                        <img style="height: 80px; cursor: pointer;" src="{!$Resource.Pocztowy}" onclick="{!c.checkImage}"/>
+                        <img id="Pocztowy" class="bankImage" src="{!$Resource.Pocztowy}" onclick="{!c.checkImage}"
+                             data-value="Pocztowy"/>
                     </lightning:layoutItem>
                     <lightning:layoutItem class="bankImg" size="4">
-                        <img style="height: 80px; cursor: pointer;" src="{!$Resource.BNP}" onclick="{!c.checkImage}"/>
+                        <img id="BNP" class="bankImage" src="{!$Resource.BNP}" onclick="{!c.checkImage}"
+                             data-value="BNP"/>
                     </lightning:layoutItem>
                     <lightning:layoutItem class="bankImg" size="4">
-                        <img style="height: 80px; cursor: pointer;" src="{!$Resource.Santander}" onclick="{!c.checkImage}"/>
+                        <img id="Santander" class="bankImage" src="{!$Resource.Santander}" onclick="{!c.checkImage}"
+                             data-value="Santander"/>
                     </lightning:layoutItem>
                     <lightning:layoutItem class="bankImg" size="4">
-                        <img style="height: 80px; cursor: pointer;" src="{!$Resource.IPKO}" onclick="{!c.checkImage}"/>
+                        <img id="IPKO" class="bankImage" src="{!$Resource.IPKO}" onclick="{!c.checkImage}"
+                             data-value="IPKO"/>
                     </lightning:layoutItem>
                 </lightning:layout>
 
