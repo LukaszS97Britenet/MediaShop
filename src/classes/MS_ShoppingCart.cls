@@ -35,6 +35,7 @@ public with sharing class MS_ShoppingCart {
 
     @AuraEnabled
     public static Cart getCart() {
+        Order ord = [SELECT Id FROM Order WHERE ];
         String partitionInput = 'local.ShoppingCart';
         String counterKeyInput = 'Cart';
         Cache.SessionPartition sessionPartition = Cache.Session.getPartition(partitionInput);
