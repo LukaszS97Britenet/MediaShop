@@ -27,7 +27,6 @@
         <members>MS_ShoppingCart</members>
         <members>MS_CartProductsAmount</members>
         <members>MS_CloseCart</members>
-        <members>MS_CreateOrderEvent</members>
         <name>AuraDefinitionBundle</name>
     </types>
     <types>

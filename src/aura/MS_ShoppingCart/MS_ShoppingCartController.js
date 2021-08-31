@@ -45,8 +45,6 @@
         console.log('submit order');
          var appEvent = $A.get("e.c:MS_CloseCart");
          appEvent.fire();
-         var appEventOrder = $A.get("e.c:MS_CreateOrderEvent");
-        appEventOrder.fire();
         var address = '/s/submitorder';
         var urlEvent = $A.get("e.force:navigateToURL");
         urlEvent.setParams({
