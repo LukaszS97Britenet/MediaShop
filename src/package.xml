@@ -3,6 +3,10 @@
     <types>
         <members>MS_DiscountManager</members>
         <members>MS_RegisterHandler</members>
+        <members>MS_ProductReview</members>
+        <members>MS_Rating</members>
+        <members>MS_ProductImages</members>
+        <members>MS_Product2Service</members>
         <members>MS_ShoppingCart</members>
         <name>ApexClass</name>
     </types>
@@ -24,6 +28,16 @@
         <members>MS_ProductListView</members>
         <members>MS_ProgressBar</members>
         <members>MS_ToastService</members>
+        <members>MS_AverageRating</members>
+        <members>MS_ProductRating</members>
+        <members>MS_ProductReview</members>
+        <members>MS_Rating</members>
+        <members>MS_RatingRefresh</members>
+        <members>MS_CarouselGallery</members>
+        <members>MS_ProductImage</members>
+        <members>MS_ProductSearch</members>
+        <members>MS_ProductTail</members>
+        <members>MS_CartProductsAmount</members>
         <members>MS_ShoppingCart</members>
         <members>MS_CartProductsAmount</members>
         <members>MS_CloseCart</members>

@@ -1,0 +1,12 @@
+<aura:component description="MS_ProductImages" controller="MS_ProductImages" access="global"
+                  implements="flexipage:availableForAllPageTypes,force:appHostable,force:hasRecordId,forceCommunity:availableForAllPageTypes">
+
+    <aura:handler name="init" value="{!this}" action="{!c.getExistingFiles}"/>
+    <aura:handler event="c:MS_ImagesRefresh" action="{!c.getExistingFiles}"/>
+    <aura:attribute access="public" name="sObjectId" type="String" default="{!v.recordId}"/>
+    <aura:attribute access="public" name="mainImageId" type="String"/>
+    <aura:attribute access="public" name="sObjectAttachedFiles" type="String[]"/>
+
+    <c:MS_CarouselGallery selectedImage="{!v.mainImageId}" images="{!v.sObjectAttachedFiles}"/>
+
+</aura:component>

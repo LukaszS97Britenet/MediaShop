@@ -1,0 +1,9 @@
+<aura:component description="MS_AverageRating" implements="flexipage:availableForAllPageTypes,force:appHostable,force:hasRecordId,forceCommunity:availableForAllPageTypes" controller="MS_Rating">
+
+    <aura:attribute name="ratingAverage" type="Decimal"/>
+    <aura:handler event="c:MS_RatingRefresh" action="{!c.doInit}"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+
+    <c:MS_Rating title="{!$Label.c.Average_Rating}" readonly="{!true}" value="{!v.ratingAverage}" />
+
+</aura:component>

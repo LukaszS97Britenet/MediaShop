@@ -1,0 +1,92 @@
+<aura:component description="MS_ProductReview" controller="MS_ProductReview"
+                implements="flexipage:availableForAllPageTypes,force:appHostable,force:hasRecordId,forceCommunity:availableForAllPageTypes">
+
+    <aura:attribute name="commentContent" type="String" default=""/>
+    <aura:attribute name="comments" type="Object"/>
+    <aura:attribute name="type" type="String"/>
+    <aura:attribute name="message" type="String"/>
+    <aura:attribute name="CurrentUser" type="Object"/>
+    <aura:attribute name="spinner" type="boolean" default="true"/>
+    <aura:if isTrue="{!v.spinner}">
+        <div aura:id="spinnerId" class="slds-spinner_container">
+            <div class="slds-spinner--brand  slds-spinner slds-spinner--large slds-is-relative" role="alert">
+                <span class="slds-assistive-text">Loading...</span>
+                <div class="slds-spinner__dot-a"></div>
+                <div class="slds-spinner__dot-b"></div>
+            </div>
+        </div>
+    </aura:if>
+    <force:recordData recordId="{!$SObjectType.CurrentUser.Id}"
+                      fields="Profile.Name"
+                      targetFields="{!v.CurrentUser}"/>
+    <c:MS_ToastService type="{!v.type}" message="{!v.message}" aura:id="toastCmp"/>
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:handler event="force:refreshView" action="{!c.doInit}"/>
+
+    <aura:if isTrue="{!v.CurrentUser.Profile.Name == 'Customer Community'}">
+
+        <lightning:layout horizontalAlign="center" multipleRows="true">
+
+            <lightning:layoutItem size="12">
+                {!$Label.c.Add_Review}
+            </lightning:layoutItem>
+
+            <lightning:layoutItem size="11">
+                <lightning:input class="commentContent" value="{!v.commentContent}" placeholder="{!$Label.c.Comment_Content}"/>
+            </lightning:layoutItem>
+
+            <lightning:layoutItem size="1" class="submitButton">
+                <lightning:button label="{!$Label.c.MS_Add}" variant="brand"
+                                  class="slds-m-top--xx-small buttonPosition" onclick="{!c.addComment}"/>
+            </lightning:layoutItem>
+
+        </lightning:layout>
+    </aura:if>
+
+    <aura:if isTrue="{!not(empty(v.comments))}">
+            <br/>
+            <br/>
+            {!$Label.c.All_Reviews}
+            <lightning:layout horizontalAlign="center" multipleRows="true">
+                <aura:iteration items="{!v.comments}" var="comment">
+                    <lightning:layoutItem size="12">
+                        <div class="slds-feed" style="width: 100%; float: left;">
+                            <ul class="slds-feed__list">
+                                <li class="slds-feed__item">
+                                    <article class="slds-post">
+                                        <header class="slds-post__header slds-media">
+                                            <div class="slds-media__figure">
+                                                <a class="slds-avatar slds-avatar_circle slds-avatar_large">
+                                                    <img class="image" src="{!comment.Picture__c}"/>
+                                                </a>
+                                            </div>
+                                            <div class="slds-media__body">
+                                                <div class="slds-grid slds-grid_align-spread slds-has-flexi-truncate">
+                                                    <p>
+                                                            {!comment.User_Name__c}
+                                                    </p>
+                                                </div>
+                                                <p class="slds-text-body_small">
+                                                    <a href="#" title="Click for single-item view of this post" class="slds-text-link_reset">
+                                                        <lightning:formattedDateTime value="{!comment.CreatedDate}" year="numeric"
+                                                                                     month="short"
+                                                                                     day="numeric"
+                                                                                     hour="numeric" minute="numeric"/></a>
+                                                </p>
+                                            </div>
+                                        </header>
+                                        <div class="slds-post__content slds-text-longform">
+                                            <p>{!comment.CommentContent__c}</p>
+                                        </div>
+                                    </article>
+                                </li>
+                            </ul>
+                        </div>
+                    </lightning:layoutItem>
+                </aura:iteration>
+            </lightning:layout>
+
+    </aura:if>
+
+</aura:component>

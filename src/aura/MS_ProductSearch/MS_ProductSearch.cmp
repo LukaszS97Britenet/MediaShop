@@ -1,0 +1,85 @@
+<aura:component description="MS_ProductSearch" controller="MS_Product2Service" implements="forceCommunity:availableForAllPageTypes,flexipage:availableForAllPageTypes">
+
+    <ltng:require styles="{!$Resource.NoHeader}"/>
+
+    <aura:attribute name="productName" type="String"/>
+    <aura:attribute name="categories" type="String[]" default="Headset,Mouse,Monitor,Laptop,PC,Keyboard,Loudspeakers"/>
+    <aura:attribute name="costFrom" type="Currency"/>
+    <aura:attribute name="costTo" type="Currency"/>
+    <aura:attribute name="searchedProducts" type="Currency"/>
+    <aura:attribute name="spinner" type="boolean" default="true"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+
+    <aura:if isTrue="{!v.spinner}">
+        <div aura:id="spinnerId" class="slds-spinner_container">
+            <div class="slds-spinner--brand  slds-spinner slds-spinner--large slds-is-relative" role="alert">
+                <span class="slds-assistive-text">Loading...</span>
+                <div class="slds-spinner__dot-a"></div>
+                <div class="slds-spinner__dot-b"></div>
+            </div>
+        </div>
+    </aura:if>
+
+    <lightning:layout horizontalAlign="center" multipleRows="true">
+        <lightning:layoutItem size="10">
+            <lightning:card class="slds-m-bottom_xxx-small customCard">
+                <lightning:layout horizontalAlign="center" multipleRows="true">
+                    <lightning:layoutItem size="4"/>
+                    <lightning:layoutItem size="3">
+                        <div class="align-form">
+                            <lightning:input value="{!v.productName}" placeholder="{!$Label.c.MS_Product_Name}" name="enter-search"
+                                             type="search"/>
+                        </div>
+                    </lightning:layoutItem>
+
+                    <lightning:layoutItem size="2">
+                        <lightning:button label="{!$Label.c.Search}" variant="brand" class="slds-m-top--xx-small buttonPosition"
+                                          onclick="{!c.searchProducts}"/>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="3"/>
+                </lightning:layout>
+            </lightning:card>
+
+            <aura:if isTrue="{!not(empty(v.searchedProducts.results))}">
+                <lightning:card class="slds-m-bottom_xxx-small customCard">
+                    <lightning:layout verticalAlign="stretch" multipleRows="true">
+                        <aura:iteration items="{!v.searchedProducts.results}" var="product">
+                            <lightning:layoutItem size="4">
+                                <c:MS_ProductTail product="{!product}"/>
+                            </lightning:layoutItem>
+                        </aura:iteration>
+                    </lightning:layout>
+                </lightning:card>
+            </aura:if>
+
+        </lightning:layoutItem>
+
+        <lightning:layoutItem size="2">
+            <lightning:card class="slds-m-bottom_xxx-small customCard">
+                <lightning:layout horizontalAlign="center" multipleRows="true">
+                    <lightning:layoutItem size="12">
+                        <div style="margin: 10px;">
+                            <h1 style="font-weight: bold; font-size: 20px;">{!$Label.c.MS_Filters}:</h1>
+                            <h1 style="font-size: 12px;">{!$Label.c.MS_Category}:</h1>
+                            <div class="align-form">
+                                <lightning:select aura:id="selectCategory" name="selectCategory" label="">
+                                    <option text="{!$Label.c.MS_SelectCategory}" value=""></option>
+                                    <aura:iteration items="{!v.categories}" var="category">
+                                        <option text="{!category}" value="{!category}"></option>
+                                    </aura:iteration>
+                                </lightning:select>
+                            </div>
+                            <h1 style="font-size: 12px;">{!$Label.c.MS_Price}:</h1>
+                            <div class="slds-grid" style="margin-top: -15px;">
+                                <lightning:input class="slds-col" value="{!v.costFrom}" placeholder="{!$Label.c.MS_From}"/>
+                                <lightning:input class="slds-col" value="{!v.costTo}" placeholder="{!$Label.c.MS_To}"/>
+                            </div>
+                            <lightning:button label="{!$Label.c.Search}" variant="brand" class="slds-m-top--xx-small"
+                                              onclick="{!c.searchProducts}"/>
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout>
+            </lightning:card>
+        </lightning:layoutItem>
+    </lightning:layout>
+</aura:component>
