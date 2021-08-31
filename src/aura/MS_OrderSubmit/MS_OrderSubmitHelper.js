@@ -65,8 +65,8 @@
                 component.set("v.message", $A.get("$Label.c.Order_success"));
                 component.find("toastCmp").toast();
                 component.set("v.confirmOrder", false);
-                var appEvent = $A.get("e.c:MS_ActualizeCartQuantity");
-                appEvent.fire();
+//                var appEvent = $A.get("e.c:MS_ActualizeCartQuantity");
+//                appEvent.fire();
                 var address = '/s/search-products';
                 var urlEvent = $A.get("e.force:navigateToURL");
                 urlEvent.setParams({

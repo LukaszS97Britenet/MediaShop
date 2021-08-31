@@ -3,6 +3,10 @@
         component.set("v.showCart", true);
     },
 
+//    actualizeCartQuantity: function(component) {
+//        component.set("v.amount", 0);
+//    },
+
     hideCart: function(component, event, helper) {
         component.set("v.showCart", false);
     },
