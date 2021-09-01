@@ -8,6 +8,9 @@
         <members>MS_ProductImages</members>
         <members>MS_Product2Service</members>
         <members>MS_OrderHistory</members>
+        <members>MS_CaseAssignOwnerId</members>
+        <members>MS_CaseHandler</members>
+        <members>MS_TriggerHandler</members>
         <name>ApexClass</name>
     </types>
     <types>
@@ -16,6 +19,7 @@
     <types>
         <members>MS_ContentDocumentLink</members>
         <members>MS_ProductRating</members>
+        <members>CaseTrigger</members>
         <name>ApexTrigger</name>
     </types>
     <types>
