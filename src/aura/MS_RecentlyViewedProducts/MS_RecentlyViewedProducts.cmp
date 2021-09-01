@@ -1,0 +1,23 @@
+<aura:component description="MS_RecentlyViewedProducts" implements="forceCommunity:availableForAllPageTypes" controller="MS_RecentlyViewed">
+
+    <aura:attribute name="products" type="List"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+
+    <div style="text-align: center; font-size: 20px;">
+        <h1>{!$Label.c.Welcome_on_MediaShop}</h1>
+    </div>
+
+    <aura:if isTrue="{!not(empty(v.products))}">
+        <div style="font-size: 15px; margin-top: 20px; margin-left: 1%;">
+            <h1>{!$Label.c.Recently_viewed_products}</h1>
+        </div>
+            <lightning:layout verticalAlign="stretch" multipleRows="true">
+                <aura:iteration items="{!v.products}" var="product">
+                    <lightning:layoutItem size="4">
+                        <c:MS_ProductTail product="{!product}"/>
+                    </lightning:layoutItem>
+                </aura:iteration>
+            </lightning:layout>
+    </aura:if>
+
+</aura:component>
