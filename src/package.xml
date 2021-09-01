@@ -7,6 +7,7 @@
         <members>MS_Rating</members>
         <members>MS_ProductImages</members>
         <members>MS_Product2Service</members>
+        <members>MS_OrderHistory</members>
         <name>ApexClass</name>
     </types>
     <types>
@@ -37,6 +38,7 @@
         <members>MS_ProductSearch</members>
         <members>MS_ProductTail</members>
         <members>MS_CartProductsAmount</members>
+        <members>MS_HistoryOrder</members>
         <name>AuraDefinitionBundle</name>
     </types>
     <types>

@@ -1,0 +1,90 @@
+<aura:component description="MS_HistoryOrder" controller="MS_OrderHistory"
+                implements="forceCommunity:availableForAllPageTypes">
+
+    <aura:attribute name="orders" type="Object"/>
+    <aura:attribute name="spinner" type="Boolean" default="true"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+
+    <aura:if isTrue="{!v.spinner}">
+        <div aura:id="spinnerId" class="slds-spinner_container">
+            <div class="slds-spinner--brand  slds-spinner slds-spinner--large slds-is-relative" role="alert">
+                <span class="slds-assistive-text">Loading...</span>
+                <div class="slds-spinner__dot-a"></div>
+                <div class="slds-spinner__dot-b"></div>
+            </div>
+        </div>
+    </aura:if>
+
+    <aura:if isTrue="{!not(empty(v.orders.results))}">
+    <lightning:layout horizontalAlign="center" multipleRows="true">
+
+        <table class="slds-table slds-table_cell-buffer slds-table_bordered"
+               aria-label="Example default base table of Opportunities">
+            <thead>
+            <tr class="slds-line-height_reset">
+                <th class="" scope="col">
+                    <div class="slds-truncate" title="{!$Label.c.Order_Number}">{!$Label.c.Order_Number}</div>
+                </th>
+                <th class="" scope="col">
+                    <div class="slds-truncate" title="{!$Label.c.TotalAmount}">{!$Label.c.TotalAmount}</div>
+                </th>
+                <th class="" scope="col">
+                    <div class="slds-truncate" title="{!$Label.c.Payment_Method}">{!$Label.c.Payment_Method}</div>
+                </th>
+                <th class="" scope="col">
+                    <div class="slds-truncate" title="{!$Label.c.DeliveryMethod}">{!$Label.c.DeliveryMethod}</div>
+                </th>
+                <th class="" scope="col">
+                    <div class="slds-truncate" title="{!$Label.c.EffectiveDate}">{!$Label.c.EffectiveDate}</div>
+                </th>
+                <th class="" scope="col">
+                    <div class="slds-truncate" title="{!$Label.c.Status}">{!$Label.c.Status}</div>
+                </th>
+                <th class="" scope="col">
+                    <div class="slds-truncate"></div>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <aura:iteration items="{!v.orders.results}" var="result">
+                <tr class="slds-hint-parent">
+                    <th scope="row">
+                        <div class="slds-truncate" style="cursor: pointer; color: blue;" title="{!$Label.c.Order_Number}" data-value="{!result.Id}" onclick="{!c.navigateToOrder}">
+                                {!result.OrderNumber}
+                        </div>
+                    </th>
+                    <td>
+                        <div class="slds-truncate" title="{!$Label.c.TotalAmount}">{!result.TotalAmount}</div>
+                    </td>
+                    <td>
+                        <div class="slds-truncate" title="{!$Label.c.Payment_Method}">{!result.Payment_Method__c}</div>
+                    </td>
+                    <td>
+                        <div class="slds-truncate" title="{!$Label.c.DeliveryMethod}">{!result.DeliveryMethod__c}</div>
+                    </td>
+                    <td>
+                        <div class="slds-truncate" title="{!$Label.c.EffectiveDate}">{!result.EffectiveDate}</div>
+                    </td>
+                    <td>
+                        <div class="slds-truncate" title="{!$Label.c.Status}">{!result.Status}</div>
+                    </td>
+                    <td>
+                        <div class="slds-truncate">
+                            <lightning:button label="{!$Label.c.Contact_Us}" variant="neutral"
+                                              class="slds-m-top--xx-small" onclick="{!c.addPricebook}"/>
+                        </div>
+                    </td>
+                </tr>
+            </aura:iteration>
+            </tbody>
+        </table>
+    </lightning:layout>
+        <aura:set attribute="else">
+            <div style="font-size: 20px; text-align: center;">
+                <h1>{!$Label.c.your_order_history_is_empty}</h1>
+            </div>
+        </aura:set>
+
+    </aura:if>
+
+</aura:component>
