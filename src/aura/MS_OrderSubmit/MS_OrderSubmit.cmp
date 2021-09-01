@@ -20,7 +20,7 @@
     <aura:attribute name="paymentMethod" type="String" default=""/>
     <aura:attribute name="deliveryMethod" type="String" default=""/>
     <aura:attribute name="confirmOrder" type="Boolean" default="false"/>
-<!--    <aura:registerEvent name="MS_ActualizeCartQuantity" type="c:MS_ActualizeCartQuantity"/>-->
+    <aura:registerEvent name="MS_ActualizeCartQuantity" type="c:MS_ActualizeCartQuantity"/>
 
     <aura:if isTrue="{!v.spinner}">
         <div aura:id="spinnerId" class="slds-spinner_container">
