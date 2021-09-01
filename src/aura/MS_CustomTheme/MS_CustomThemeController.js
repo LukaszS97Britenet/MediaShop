@@ -17,4 +17,8 @@
     getAmount: function(component, event, helper) {
         helper.getAmount(component);
     },
+
+    actualizeProductsAmount: function(component, event, helper) {
+        component.set("v.amount", 0);
+    }
 })
