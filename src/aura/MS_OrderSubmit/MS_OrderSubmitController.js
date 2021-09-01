@@ -60,7 +60,7 @@
     },
 
     submitSecondScreen: function(component, event, helper) {
-        if(component.get("v.street") !== '' || component.get("v.country") !== '' || component.get("v.city") !== '' || component.get("v.postalCode") !== '' || component.get("v.state") !== '') {
+        if(component.get("v.street") !== '' && component.get("v.country") !== '' && component.get("v.city") !== '' && component.get("v.postalCode") !== '' && component.get("v.state") !== '') {
             component.set("v.paymentMethod", component.find("paymentMethod").get("v.value"));
             component.set("v.deliveryMethod", component.find("deliveryMethod").get("v.value"));
             if(component.find("paymentMethod").get("v.value") === 'Cash') {
