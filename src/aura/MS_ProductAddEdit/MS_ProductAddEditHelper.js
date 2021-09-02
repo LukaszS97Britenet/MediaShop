@@ -73,9 +73,9 @@
                     component.find("overlayLib").notifyClose();
                     var toastEvent = $A.get("e.force:showToast");
                     toastEvent.setParams({
-                        'type': 'Success',
-                        "title": "Success!",
-                        "message": "Data saved successfully."
+                        'type': $A.get("$Label.c.SuccessLabel"),
+                        "title": $A.get("$Label.c.SuccessLabel"),
+                        "message": $A.get("$Label.c.Data_saved_successfully")
                     });
                     toastEvent.fire();
                     $A.get('e.force:refreshView').fire();
@@ -135,10 +135,10 @@
             }
 
             toastEvent.setParams({
-                "type": "Success",
-                "title": "Success!",
-                "message": "You have successfully deleted selected photos."
-            });
+                "type": $A.get("$Label.c.SuccessLabel"),
+                "title": $A.get("$Label.c.SuccessLabel"),
+                "message": $A.get("$Label.c.You_have_successfully_deleted_selected_photos")
+                           });
             toastEvent.fire();
         });
         $A.enqueueAction(action);

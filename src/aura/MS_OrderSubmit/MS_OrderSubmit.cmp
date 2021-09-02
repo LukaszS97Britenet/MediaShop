@@ -1,0 +1,329 @@
+<aura:component description="MS_OrderSubmit" controller="MS_OrderSubmit"
+                implements="flexipage:availableForAllPageTypes,force:appHostable,force:hasRecordId,forceCommunity:availableForAllPageTypes">
+
+    <aura:attribute name="firstScreen" type="Boolean" default="true"/>
+    <aura:attribute name="secondScreen" type="Boolean" default="false"/>
+    <aura:attribute name="thirdScreen" type="Boolean" default="false"/>
+    <aura:attribute name="cart" type="Object"/>
+    <aura:attribute name="totalPrice" type="Decimal"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="type" type="String"/>
+    <aura:attribute name="message" type="String"/>
+    <aura:attribute name="spinner" type="boolean" default="true"/>
+    <c:MS_ToastService type="{!v.type}" message="{!v.message}" aura:id="toastCmp"/>
+    <aura:attribute name="orderId" type="String"/>
+    <aura:attribute name="street" type="String" default=""/>
+    <aura:attribute name="city" type="String" default=""/>
+    <aura:attribute name="state" type="String" default=""/>
+    <aura:attribute name="postalCode" type="String" default=""/>
+    <aura:attribute name="country" type="String" default=""/>
+    <aura:attribute name="paymentMethod" type="String" default=""/>
+    <aura:attribute name="deliveryMethod" type="String" default=""/>
+    <aura:attribute name="confirmOrder" type="Boolean" default="false"/>
+    <aura:registerEvent name="MS_ActualizeCartQuantity" type="c:MS_ActualizeCartQuantity"/>
+
+    <aura:if isTrue="{!v.spinner}">
+        <div aura:id="spinnerId" class="slds-spinner_container">
+            <div class="slds-spinner--brand  slds-spinner slds-spinner--large slds-is-relative" role="alert">
+                <span class="slds-assistive-text">Loading...</span>
+                <div class="slds-spinner__dot-a"></div>
+                <div class="slds-spinner__dot-b"></div>
+            </div>
+        </div>
+    </aura:if>
+
+    <aura:if isTrue="{!v.firstScreen}">
+
+        <lightning:layout horizontalAlign="center" multipleRows="true">
+            <lightning:layoutItem size="12">
+                <aura:if isTrue="{!not(empty(v.cart.products))}">
+
+                    <div class="slds-grid">
+                        <div style="width: 40%; height: 120px; border-bottom: 1px solid rgb(230,230,230)">
+                        </div>
+                        <div style="width: 20%; height: 120px; border-bottom: 1px solid rgb(230,230,230)">
+                            <p style="margin-top: 40px; font-size: 20px; text-align: center;"><b>
+                                {!$Label.c.Order_Details}:</b></p>
+                        </div>
+                        <div style="width: 40%; height: 120px; border-bottom: 1px solid rgb(230,230,230)">
+                        </div>
+                    </div>
+
+                    <aura:iteration items="{!v.cart.products}" var="product">
+                        <div class="slds-grid">
+                            <div style="width: 12%; height: 120px; border-bottom: 1px solid rgb(230,230,230)">
+                                <div style="padding: 4px;">
+                                    <img class="image"
+                                         src="{!'/sfc/servlet.shepherd/document/download/' + product.product.Product2.MainImageId__c}"/>
+                                </div>
+                            </div>
+                            <div style="width: 28%; height: 120px; border-bottom: 1px solid rgb(230,230,230)"
+                                 data-productid="{!product.product.Product2.Id}" onclick="{!c.productDetails}">
+                                <p style="margin-top: 40px; font-size: 20px; cursor: pointer;">{!product.product.Name}</p>
+                            </div>
+                            <div style="width: 20%; height: 120px; border-bottom: 1px solid rgb(230,230,230); text-align: center;">
+                                <p style="margin-top: 40px; font-size: 20px;">
+                                    €{!' ' + product.quantity*product.product.UnitPrice}</p>
+                            </div>
+                            <div style="width: 35%; height: 120px; border-bottom: 1px solid rgb(230,230,230); text-align: center;">
+                                <div style="margin-top: 38px; font-size: 20px;">
+                                    Quantity: {!product.quantity}
+                                </div>
+                            </div>
+                            <div style="width: 5%; height: 120px; border-bottom: 1px solid rgb(230,230,230)">
+
+                            </div>
+                        </div>
+                    </aura:iteration>
+
+                    <div class="slds-grid">
+                        <div style="width: 40%; height: 120px; border-bottom: 1px solid rgb(230,230,230)">
+                        </div>
+                        <div style="width: 20%; height: 120px; border-bottom: 1px solid rgb(230,230,230)">
+                            <p style="margin-top: 40px; font-size: 20px; text-align: center;"><b>
+                                Total Price: €{!' ' + v.totalPrice}</b></p>
+                        </div>
+                        <div style="width: 40%; height: 120px; border-bottom: 1px solid rgb(230,230,230)">
+                            <lightning:button label="{!$Label.c.Next}" variant="brand"
+                                              class="slds-m-top--xx-small buttonPosition"
+                                              onclick="{!c.showSecondScreen}"/>
+                        </div>
+                    </div>
+
+                    <aura:set attribute="else">
+                        <div style="width: 100%; text-align:center; height: 90px; border-bottom: 1px solid rgb(230,230,230)">
+                            <p style="margin-top: 40px; font-size: 20px;">{!$Label.c.MS_EmptyCart}</p>
+                        </div>
+                    </aura:set>
+
+                </aura:if>
+
+            </lightning:layoutItem>
+        </lightning:layout>
+
+    </aura:if>
+
+    <aura:if isTrue="{!v.secondScreen}">
+
+        <lightning:layout horizontalAlign="center" multipleRows="true">
+            <lightning:layoutItem size="12">
+
+                <div class="slds-grid">
+                    <div style="width: 40%; height: 120px; border-bottom: 1px solid rgb(230,230,230)">
+                    </div>
+                    <div style="width: 20%; height: 120px; border-bottom: 1px solid rgb(230,230,230)">
+                        <p style="margin-top: 40px; font-size: 20px; text-align: center;"><b>
+                            {!$Label.c.Address_and_Delivery_Method}</b></p>
+                    </div>
+                    <div style="width: 40%; height: 120px; border-bottom: 1px solid rgb(230,230,230)">
+                    </div>
+                </div>
+
+                <lightning:layout horizontalAlign="center" multipleRows="true">
+                    <lightning:layoutItem size="1">
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="4">
+
+                        <lightning:input value="{!v.street}"
+                                         placeholder="{!$Label.c.Street}"
+                                         name="Street" label="{!$Label.c.Street}"/>
+
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="2">
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="4">
+
+                        <lightning:input value="{!v.city}"
+                                         placeholder="{!$Label.c.City}"
+                                         name="City" label="{!$Label.c.City}"/>
+
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="1">
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="1">
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="4">
+
+                        <lightning:input value="{!v.state}"
+                                         placeholder="{!$Label.c.State}"
+                                         name="State" label="{!$Label.c.State}"/>
+
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="2">
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="4">
+
+                        <lightning:input value="{!v.postalCode}"
+                                         placeholder="{!$Label.c.Postal_Code}"
+                                         name="PostalCode" label="{!$Label.c.Postal_Code}"/>
+
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="1">
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="1">
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="4">
+
+                        <lightning:input value="{!v.country}"
+                                         placeholder="{!$Label.c.Country}"
+                                         name="Street" label="{!$Label.c.Country}"/>
+
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="2">
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="4">
+
+                        <lightning:select aura:id="paymentMethod" name="products" label="{!$Label.c.Payment_Method}">
+                            <option value="Cash">{!$Label.c.Cash}</option>
+                            <option value="Card">{!$Label.c.Card}</option>
+                        </lightning:select>
+
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="1">
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="1">
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="4">
+
+                        <lightning:select aura:id="deliveryMethod" name="products" label="{!$Label.c.DeliveryMethod}">
+                            <option value="DeliveryMan">{!$Label.c.DeliveryMan}</option>
+                            <option value="PickUpPerson">{!$Label.c.PickupInPerson}</option>
+                        </lightning:select>
+
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="2">
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="4">
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="1">
+                    </lightning:layoutItem>
+                </lightning:layout>
+
+                <div class="slds-grid">
+                    <div style="width: 39%; height: 120px; border-bottom: 1px solid rgb(230,230,230)">
+                    </div>
+                    <div style="width: 10%; height: 120px; border-bottom: 1px solid rgb(230,230,230)">
+                        <lightning:button label="{!$Label.c.MS_Previous}" variant="brand"
+                                          class="slds-m-top--xx-small thirdButtonPosition"
+                                          onclick="{!c.showFirstScreen}"/>
+                    </div>
+                    <div style="width: 2%; height: 120px; border-bottom: 1px solid rgb(230,230,230)">
+
+                    </div>
+                    <div style="width: 10%; height: 120px; border-bottom: 1px solid rgb(230,230,230)">
+                        <lightning:button label="{!$Label.c.Next}" variant="brand"
+                                          class="slds-m-top--xx-small thirdButtonPosition"
+                                          onclick="{!c.submitSecondScreen}"/>
+                    </div>
+                    <div style="width: 39%; height: 120px; border-bottom: 1px solid rgb(230,230,230)">
+                    </div>
+                </div>
+
+            </lightning:layoutItem>
+        </lightning:layout>
+
+    </aura:if>
+
+    <aura:if isTrue="{!v.thirdScreen}">
+
+        <lightning:layout horizontalAlign="center" multipleRows="true">
+            <lightning:layoutItem size="12">
+
+                <div class="slds-grid">
+                    <div style="width: 40%; height: 120px; border-bottom: 1px solid rgb(230,230,230)">
+                    </div>
+                    <div style="width: 20%; height: 120px; border-bottom: 1px solid rgb(230,230,230)">
+                        <p style="margin-top: 40px; font-size: 20px; text-align: center;"><b>
+                            {!$Label.c.Select_Bank}:</b></p>
+                    </div>
+                    <div style="width: 40%; height: 120px; border-bottom: 1px solid rgb(230,230,230)">
+                    </div>
+                </div>
+                <lightning:layout horizontalAlign="center" multipleRows="true">
+                    <lightning:layoutItem class="bankImg" size="4">
+                        <img id="ING" class="bankImage" src="{!$Resource.ING}" onclick="{!c.checkImage}"
+                             data-value="ING"/>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem class="bankImg" size="4">
+                        <img id="Alior" class="bankImage" src="{!$Resource.Alior}" onclick="{!c.checkImage}"
+                             data-value="Alior"/>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem class="bankImg" size="4">
+                        <img id="Pocztowy" class="bankImage" src="{!$Resource.Pocztowy}" onclick="{!c.checkImage}"
+                             data-value="Pocztowy"/>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem class="bankImg" size="4">
+                        <img id="BNP" class="bankImage" src="{!$Resource.BNP}" onclick="{!c.checkImage}"
+                             data-value="BNP"/>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem class="bankImg" size="4">
+                        <img id="Santander" class="bankImage" src="{!$Resource.Santander}" onclick="{!c.checkImage}"
+                             data-value="Santander"/>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem class="bankImg" size="4">
+                        <img id="IPKO" class="bankImage" src="{!$Resource.IPKO}" onclick="{!c.checkImage}"
+                             data-value="IPKO"/>
+                    </lightning:layoutItem>
+                </lightning:layout>
+
+                <div style="width: 100%; height: 20px; border-bottom: 1px solid rgb(230,230,230)">
+                </div>
+
+                <div class="slds-grid">
+                    <div style="width: 39%; height: 120px; border-bottom: 1px solid rgb(230,230,230)">
+                    </div>
+                    <div style="width: 10%; height: 120px; border-bottom: 1px solid rgb(230,230,230)">
+                        <lightning:button label="{!$Label.c.MS_Previous}" variant="brand"
+                                          class="slds-m-top--xx-small thirdButtonPosition"
+                                          onclick="{!c.showSecondScreen}"/>
+                    </div>
+                    <div style="width: 2%; height: 120px; border-bottom: 1px solid rgb(230,230,230)">
+
+                    </div>
+                    <div style="width: 10%; height: 120px; border-bottom: 1px solid rgb(230,230,230)">
+                        <lightning:button label="{!$Label.c.Next}" variant="brand"
+                                          class="slds-m-top--xx-small thirdButtonPosition"
+                                          onclick="{!c.submitDetails}"/>
+                    </div>
+                    <div style="width: 39%; height: 120px; border-bottom: 1px solid rgb(230,230,230)">
+                    </div>
+                </div>
+
+            </lightning:layoutItem>
+        </lightning:layout>
+
+    </aura:if>
+
+    <aura:if isTrue="{!v.confirmOrder}">
+
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <lightning:buttonIcon iconName="utility:close"
+                                          onclick="{! c.closeModel }"
+                                          alternativeText="close"
+                                          variant="bare-inverse"
+                                          class="slds-modal__close"/>
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{!$Label.c.Confirm_Order}</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    <p>{!$Label.c.Finalize_Order}
+                    </p>
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning:button variant="neutral"
+                                      label="{!$Label.c.Cancel}"
+                                      title="{!$Label.c.Cancel}"
+                                      onclick="{! c.closeModel }"/>
+                    <lightning:button variant="brand"
+                                      label="{!$Label.c.MS_Finish}"
+                                      title="{!$Label.c.MS_Finish}"
+                                      onclick="{!c.submit}"/>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+
+    </aura:if>
+
+</aura:component>

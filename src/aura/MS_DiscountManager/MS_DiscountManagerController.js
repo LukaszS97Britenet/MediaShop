@@ -44,18 +44,18 @@
                          })});
                      helper.editPercentsInPricebook(component, action);
                 }else {
-                     component.set("v.type", 'Error');
-                     component.set("v.message", 'Enter data to create a pricebook!');
+                     component.set("v.type", $A.get("$Label.c.ErrorLabel"));
+                     component.set("v.message", $A.get("$Label.c.Enter_data_to_create_a_pricebook"));
                      component.find("toastCmp").toast();
                 }
             } else {
-                component.set("v.type", 'Error');
-                component.set("v.message", 'Discount must be between 1 and 99!');
+                component.set("v.type", $A.get("$Label.c.ErrorLabel"));
+                component.set("v.message", $A.get("$Label.c.Discount_must_be_between_1_and_99"));
                 component.find("toastCmp").toast();
             }
             } else {
-                 component.set("v.type", 'Error');
-                 component.set("v.message", 'Enter data to create a pricebook!');
+                 component.set("v.type", $A.get("$Label.c.ErrorLabel"));
+                 component.set("v.message", $A.get("$Label.c.Enter_data_to_create_a_pricebook"));
                  component.find("toastCmp").toast();
             }
     },
@@ -196,17 +196,17 @@
                           helper.savePricebookEntry(component, action);
                       }else {
                           component.set("v.type", 'Error');
-                          component.set("v.message", 'Enter data to create a pricebook!');
+                          component.set("v.message", $A.get("$Label.c.Enter_data_to_create_a_pricebook"));
                           component.find("toastCmp").toast();
                       }
                 } else {
                     component.set("v.type", 'Error');
-                    component.set("v.message", 'Discount must be between 1 and 99!');
+                    component.set("v.message", $A.get("$Label.c.Discount_must_be_between_1_and_99"));
                     component.find("toastCmp").toast();
                 }
             } else {
                 component.set("v.type", 'Error');
-                component.set("v.message", 'Enter data to create a pricebook!');
+                component.set("v.message", $A.get("$Label.c.Enter_data_to_create_a_pricebook"));
                 component.find("toastCmp").toast();
             }
         }

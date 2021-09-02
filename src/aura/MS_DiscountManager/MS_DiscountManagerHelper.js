@@ -8,8 +8,8 @@
                     component.set("v.searchedProductsAll", result);
                     component.set("v.spinner", false);
                     if(result.results.length < 1 ) {
-                        component.set("v.type", 'Error');
-                        component.set("v.message", 'There are no products in the database.');
+                        component.set("v.type", $A.get("$Label.c.ErrorLabel"));
+                        component.set("v.message", $A.get("$Label.c.There_are_no_products_in_the_database"));
                         component.find("toastCmp").toast();
                     }
             }
@@ -73,13 +73,13 @@
                 component.set("v.spinner", false);
                 if(result) {
                     component.set("v.isManageProductsOpen", false);
-                    component.set("v.type", 'Success');
-                    component.set("v.message", 'Products updated successfully.');
+                    component.set("v.type", $A.get("$Label.c.SuccessLabel"));
+                    component.set("v.message", $A.get("$Label.c.Products_updated_successfully"));
                     component.find("toastCmp").toast();
                     $A.get('e.force:refreshView').fire();
                 } else {
-                    component.set("v.type", 'Error');
-                    component.set("v.message", 'Oops.. Something went wrong.');
+                    component.set("v.type", $A.get("$Label.c.ErrorLabel"));
+                    component.set("v.message", $A.get("$Label.c.Oops_Something_went_wrong"));
                     component.find("toastCmp").toast();
                 }
             }
@@ -93,8 +93,8 @@
             let result = response.getReturnValue();
             if(state === "SUCCESS") {
                 component.set("v.spinner", false);
-                component.set("v.type", 'Success');
-                component.set("v.message", 'Pricebook deleted successfully.');
+                component.set("v.type", $A.get("$Label.c.SuccessLabel"));
+                component.set("v.message", $A.get("$Label.c.Pricebook_deleted_successfully"));
                 component.find("toastCmp").toast();
                 $A.get('e.force:refreshView').fire();
             }
@@ -148,12 +148,12 @@
             if(state === "SUCCESS") {
                 component.set("v.spinner", false);
                     if(!result) {
-                        component.set("v.type", 'Error');
-                        component.set("v.message", 'Something went wrong, try again!');
+                        component.set("v.type",$A.get("$Label.c.ErrorLabel"));
+                        component.set("v.message", $A.get("$Label.c.Oops_Something_went_wrong"));
                         component.find("toastCmp").toast();
                     } else {
-                        component.set("v.type", 'Success');
-                        component.set("v.message", 'Pricebook created successfully!');
+                        component.set("v.type", $A.get("$Label.c.SuccessLabel"));
+                        component.set("v.message", $A.get("$Label.c.Pricebook_created_successfully"));
                         component.find("toastCmp").toast();
                         $A.get('e.force:refreshView').fire();
                     }
@@ -169,12 +169,12 @@
                 if(state === "SUCCESS") {
                         component.set("v.spinner", false);
                         if(!result) {
-                            component.set("v.type", 'Error');
-                            component.set("v.message", 'Something went wrong, try again!');
+                            component.set("v.type", $A.get("$Label.c.ErrorLabel"));
+                            component.set("v.message", $A.get("$Label.c.Oops_Something_went_wrong"));
                             component.find("toastCmp").toast();
                         } else {
-                            component.set("v.type", 'Success');
-                            component.set("v.message", 'Discount updated successfully!');
+                            component.set("v.type", $A.get("$Label.c.SuccessLabel"));
+                            component.set("v.message", $A.get("$Label.c.Discount_updated_successfully"));
                             component.find("toastCmp").toast();
                             $A.get('e.force:refreshView').fire();
                         }

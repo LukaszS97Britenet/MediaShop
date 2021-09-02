@@ -35,9 +35,9 @@
         if(component.get("v.filesToDelete").length === 0) {
             var toastEvent = $A.get("e.force:showToast");
             toastEvent.setParams({
-                "type": "Error",
-                "title": "Error!",
-                "message": "You did not select the photos to delete."
+                "type": $A.get("$Label.c.ErrorLabel"),
+                "title": $A.get("$Label.c.ErrorLabel"),
+                "message": $A.get("$Label.c.You_did_not_select_the_photos_to_delete")
             });
             toastEvent.fire();
         } else {
@@ -75,18 +75,18 @@
            } else {
                    var toastEvent = $A.get("e.force:showToast");
                    toastEvent.setParams({
-                       "type": "Error",
-                       "title": "Error!",
-                       "message": "The cost field can only contain numbers."
+                       "type": $A.get("$Label.c.ErrorLabel"),
+                       "title": $A.get("$Label.c.ErrorLabel"),
+                       "message": $A.get("$Label.c.The_cost_field_can_only_contain_numbers")
                    });
                    toastEvent.fire();
            }
        } else {
            var toastEvent = $A.get("e.force:showToast");
                toastEvent.setParams({
-                   "type": "Error",
-                   "title": "Error!",
-                   "message": "Name and Cost are a required fields."
+                   "type": $A.get("$Label.c.ErrorLabel"),
+                   "title": $A.get("$Label.c.ErrorLabel"),
+                   "message": $A.get("$Label.c.Name_and_Cost_are_a_required_fields")
                });
                toastEvent.fire();
        }
