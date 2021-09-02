@@ -9,6 +9,7 @@
         <members>MS_Product2Service</members>
         <members>MS_ShoppingCart</members>
         <members>MS_OrderSubmit</members>
+        <members>MS_RecentlyViewed</members>
         <name>ApexClass</name>
     </types>
     <types>
@@ -46,6 +47,7 @@
         <members>MS_OrderSubmit</members>
         <members>MS_CreateOrderEvent</members>
         <members>MS_ActualizeCartQuantity</members>
+        <members>MS_RecentlyViewedProducts</members>
         <name>AuraDefinitionBundle</name>
     </types>
     <types>
