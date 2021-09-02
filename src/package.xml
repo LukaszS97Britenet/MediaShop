@@ -11,6 +11,9 @@
         <members>MS_OrderSubmit</members>
         <members>MS_RecentlyViewed</members>
         <members>MS_OrderHistory</members>
+        <members>MS_CaseAssignOwnerId</members>
+        <members>MS_CaseHandler</members>
+        <members>MS_TriggerHandler</members>
         <name>ApexClass</name>
     </types>
     <types>
@@ -19,6 +22,7 @@
     <types>
         <members>MS_ContentDocumentLink</members>
         <members>MS_ProductRating</members>
+        <members>CaseTrigger</members>
         <name>ApexTrigger</name>
     </types>
     <types>
