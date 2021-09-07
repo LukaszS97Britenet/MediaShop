@@ -19,7 +19,7 @@
                             toastEvent.setParams({
                                 "type": 'Error',
                                 "title": "Error!",
-                                "message": "There are no products that match your search criteria."
+                                "message": $A.get("$Label.c.There_are_no_products_that_match_your_search_criteria")
                             });
                             toastEvent.fire();
                     }

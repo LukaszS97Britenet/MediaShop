@@ -1,0 +1,83 @@
+<template>
+    <div class="exampleHolder">
+        <template if:true={loaded}>
+            <lightning-record-edit-form object-api-name="Contact">
+                <h1 style="text-align: center; font-size: 20px; color: green; margin-bottom: 20px;">{label.clubTitle}</h1>
+                <lightning-messages></lightning-messages>
+                <lightning-layout multiple-rows>
+                    <lightning-layout-item padding="around-small" size="3">
+                    </lightning-layout-item>
+                    <lightning-layout-item padding="around-small" size="6">
+                        <lightning-input-field field-name="FirstName" onchange={handleFieldChange} value={contact.FirstName}>
+                        </lightning-input-field>
+                    </lightning-layout-item>
+                    <lightning-layout-item padding="around-small" size="3">
+                    </lightning-layout-item>
+
+                    <lightning-layout-item padding="around-small" size="3">
+                    </lightning-layout-item>
+                    <lightning-layout-item padding="around-small" size="6">
+                        <lightning-input-field field-name="LastName" onchange={handleFieldChange} value={contact.LastName}>
+                        </lightning-input-field>
+                    </lightning-layout-item>
+                    <lightning-layout-item padding="around-small" size="3">
+                    </lightning-layout-item>
+
+                    <lightning-layout-item padding="around-small" size="3">
+                    </lightning-layout-item>
+                    <lightning-layout-item padding="around-small" size="6">
+                        <lightning-input-field field-name="Interested__c" onchange={handleFieldChange}
+                                               value={contact.Interested__c}>
+                        </lightning-input-field>
+                    </lightning-layout-item>
+                    <lightning-layout-item padding="around-small" size="3">
+                    </lightning-layout-item>
+
+                    <lightning-layout-item padding="around-small" size="3">
+                    </lightning-layout-item>
+                    <lightning-layout-item padding="around-small" size="6">
+                        <lightning-input-field field-name="KnowAboutUs__c" onchange={handleFieldChange}
+                                               value={contact.KnowAboutUs__c}>
+                        </lightning-input-field>
+                    </lightning-layout-item>
+                    <lightning-layout-item padding="around-small" size="3">
+                    </lightning-layout-item>
+
+                    <lightning-layout-item padding="around-small" size="3">
+                    </lightning-layout-item>
+                    <lightning-layout-item padding="around-small" size="6">
+                        <lightning-input-field field-name="IsSendEmailAllowed__c" onchange={handleFieldChange}
+                                               value={contact.IsSendEmailAllowed__c}>
+                        </lightning-input-field>
+                    </lightning-layout-item>
+                    <lightning-layout-item padding="around-small" size="3">
+                    </lightning-layout-item>
+
+                    <lightning-layout-item padding="around-small" size="3">
+                    </lightning-layout-item>
+                    <lightning-layout-item padding="around-small" class="slds-text-align_center" size="6">
+                        <lightning-button variant="destructive-text"
+                                          type="submit"
+                                          name="submitDeletion"
+                                          label={label.leftClub}
+                                          disabled={leave}
+                                          onclick={leaveClub}>
+                        </lightning-button>
+                        <lightning-button type="submit"
+                                          name="submit"
+                                          label={label.jointoourclub}
+                                          disabled={stay}
+                                          onclick={joinToClub}>
+                        </lightning-button>
+                    </lightning-layout-item>
+                    <lightning-layout-item padding="around-small" size="3">
+                    </lightning-layout-item>
+
+                </lightning-layout>
+            </lightning-record-edit-form>
+        </template>
+        <template if:false={loaded}>
+            <lightning-spinner alternative-text="Loading"></lightning-spinner>
+        </template>
+    </div>
+</template>

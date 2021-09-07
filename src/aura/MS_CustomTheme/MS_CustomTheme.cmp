@@ -6,6 +6,7 @@
     <aura:attribute name="CurrentUser" type="Object"/>
     <aura:attribute name="showCart" type="boolean" default="false"/>
     <aura:attribute name="amount" type="Decimal" default="0"/>
+    <aura:attribute name="newHeader" type="Aura.Component[]" required="false"/>
     <aura:handler event="c:MS_CartProductsAmount" action="{!c.getProductsAmount}"/>
     <aura:handler event="c:MS_ActualizeCartQuantity" action="{!c.actualizeProductsAmount}"/>
     <aura:handler event="c:MS_CloseCart" action="{!c.hideCart}"/>
@@ -40,6 +41,9 @@
         </div>
         <div class="navigation">
                 {!v.navBar}
+        </div>
+        <div class="newHeader">
+            {!v.newHeader}
         </div>
         <div class="mainContentArea" style="width:80%; margin-left: 10%;">
                 {!v.body}

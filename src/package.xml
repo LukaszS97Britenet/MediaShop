@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
     <types>
         <members>MS_DiscountManager</members>
@@ -14,6 +14,7 @@
         <members>MS_CaseAssignOwnerId</members>
         <members>MS_CaseHandler</members>
         <members>MS_TriggerHandler</members>
+        <members>ContactController</members>
         <name>ApexClass</name>
     </types>
     <types>
@@ -121,6 +122,10 @@
         <members>MS_ProductRating__c</members>
         <members>Product_Rating__c</members>
         <name>SharingRules</name>
+    </types>
+    <types>
+        <members>loyaltyClub</members>
+        <name>LightningComponentBundle</name>
     </types>
     <version>51.0</version>
 </Package>

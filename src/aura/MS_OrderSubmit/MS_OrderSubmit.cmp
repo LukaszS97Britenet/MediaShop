@@ -186,7 +186,7 @@
                     <lightning:layoutItem size="4">
 
                         <lightning:select aura:id="deliveryMethod" name="products" label="{!$Label.c.DeliveryMethod}">
-                            <option value="DeliveryMan">{!$Label.c.DeliveryMan}</option>
+                            <option value="Courier">{!$Label.c.DeliveryMan}</option>
                             <option value="PickUpPerson">{!$Label.c.PickupInPerson}</option>
                         </lightning:select>
 

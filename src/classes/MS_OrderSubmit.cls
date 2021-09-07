@@ -41,7 +41,7 @@ public with sharing class MS_OrderSubmit {
         newOrder.OwnerId = UserInfo.getUserId();
         newOrder.AccountId = [SELECT Id FROM Account WHERE Name='Personal'].Id;
         newOrder.EffectiveDate = Date.today();
-        newOrder.BillToContactId = [SELECT ContactId FROM User WHERE Id =: UserInfo.getUserId() LIMIT 1].ContactId;
+        newOrder.Contact__c = [SELECT ContactId FROM User WHERE Id =: UserInfo.getUserId() LIMIT 1].ContactId;
         newOrder.Pricebook2Id = shoppingCart.products.get(0).product.Pricebook2Id;
         insert newOrder;
         List<OrderItem> items = new List<OrderItem>();
