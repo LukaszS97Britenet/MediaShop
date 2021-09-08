@@ -14,6 +14,7 @@
             let result = response.getReturnValue();
             if(state === "SUCCESS") {
                     component.set("v.searchedProducts", result);
+                    console.log(result);
                     if(result.results.length < 1 ) {
                         var toastEvent = $A.get("e.force:showToast");
                             toastEvent.setParams({

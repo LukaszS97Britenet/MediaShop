@@ -12,7 +12,7 @@
                       fields="Profile.Name"
                       targetFields="{!v.CurrentUser}"/>
 
-    <div class="tail" style="height: 190px; background-color: white;">
+    <div class="tail" style="height: 205px; background-color: white;">
         <aura:if isTrue="{!not(empty(v.product.Product2.MainImageId__c))}">
             <div style="text-align: center">
                 <img style="max-height: 146px; min-height: 146px;"
@@ -21,11 +21,10 @@
             </div>
             <div class="slds-grid">
                 <div class="tailTitle" style="width: 30%;">
-
                 </div>
                 <div class="tailTitle" onclick="{!c.productDetails}"
                      style="max-height:50px; width: 40%; background-color: rgb(230, 230, 230);">
-                {!v.product.Name}<br/>Cost: €{!v.product.UnitPrice}.00
+                    {!v.product.Name}<br/>Cost: €{!v.product.UnitPrice}
                 </div>
                 <div class="tailTitle" style="width: 30%; padding-top: 10px; padding-left: 40px;">
                     <aura:if isTrue="{!v.CurrentUser.Profile.Name == 'Customer Community'}">
@@ -34,11 +33,16 @@
                     </aura:if>
                 </div>
             </div>
+            <div style="width: 100%; height: 14px; background-color: rgb(230, 230, 230);">
+                <aura:if isTrue="{!v.product.PercentDiscount__c!=null}">
+                    <p style="font-size: 10px; text-align: center; color: red;">Discount:{!v.product.PercentDiscount__c}%</p>
+                </aura:if>
+            </div>
             <aura:set attribute="else">
                 <img style="max-height: 146px; min-height: 146px;" src="{!$Resource.MS_DefaultPhotoImage}"
                      alt="{!v.product.Name}"/>
                 <div class="tailTitle" style="max-height:50px;">
-                {!v.product.Name}<br/>{!$Label.c.MS_Price}: €{!v.product.UnitPrice}.00
+                    {!v.product.Name}<br/>{!$Label.c.MS_Price}: €{!v.product.UnitPrice}.00
                 </div>
             </aura:set>
         </aura:if>

@@ -125,6 +125,8 @@
     </types>
     <types>
         <members>loyaltyClub</members>
+        <members>loyaltyManager</members>
+        <members>loyaltyTile</members>
         <name>LightningComponentBundle</name>
     </types>
     <version>51.0</version>

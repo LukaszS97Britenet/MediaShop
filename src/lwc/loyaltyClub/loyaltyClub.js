@@ -10,6 +10,7 @@ import clubTitle from '@salesforce/label/c.ClubTitle';
 import youLeftClub from '@salesforce/label/c.You_left_our_club';
 import leftClub from '@salesforce/label/c.Left_The_Club';
 import contactDataUpdated from '@salesforce/label/c.Contact_data_updated';
+
 export default class LoyaltyClub extends LightningElement {
     label = {
             jointoourclub,
@@ -19,7 +20,7 @@ export default class LoyaltyClub extends LightningElement {
             youLeftClub,
             leftClub
         };
-    @track contact = {};
+    contact = {};
     loaded = false;
     leave;
     stay;
@@ -77,6 +78,7 @@ export default class LoyaltyClub extends LightningElement {
     }
 
     changeButtonsEnable(){
+        console.log(this.contact.Is_In_Club__c);
         if(this.contact.Is_In_Club__c) {
             this.leave = false;
             this.stay = true;

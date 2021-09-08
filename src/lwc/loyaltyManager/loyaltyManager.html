@@ -1,0 +1,23 @@
+<template>
+    <lightning-card>
+        <div class="exampleHolder">
+            <template if:true={loaded}>
+                <template if:false={isArrayEmpty}>
+                    <lightning-layout multiple-rows="true" pull-to-boundary="small">
+                        <template for:each={users} for:item="user">
+                            <lightning-layout-item key={user.Contact.Id} size="2" class="slds-var-p-around_x-small">
+                                <c-loyalty-tile user={user} oncallpasstoparent={passToParent}></c-loyalty-tile>
+                            </lightning-layout-item>
+                        </template>
+                    </lightning-layout>
+                </template>
+                <template if:true={isArrayEmpty}>
+                    <h1 style="font-size: 20px; margin-top: 20px; text-align: center; width: 100%;">{label.noMembers}</h1>
+                </template>
+            </template>
+            <template if:false={loaded}>
+                <lightning-spinner alternative-text="Loading"></lightning-spinner>
+            </template>
+        </div>
+    </lightning-card>
+</template>

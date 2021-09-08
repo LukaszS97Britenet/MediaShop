@@ -1,0 +1,21 @@
+<template>
+    <div class="tail" style="height: 230px; background-color: white;">
+        <div style="text-align: center; margin-top: 20px;">
+            <img src={user.PictureUrl__c} style="height: 130px;"
+                 alt={user.Contact.Name}/>
+        </div>
+        <div class="tailTitle"
+             style="font-size: 15px; font-weight: bold; max-height:50px; width: 100%;">
+            {user.Contact.Name}
+        </div>
+        <div class="tailTitle"
+             style="font-size: 13px; font-weight: bold; max-height:50px; width: 100%;">
+            <lightning-button variant="destructive-text"
+                              type="submit"
+                              name="submitDeletion"
+                              label={label.deleteFromClub}
+                              onclick={deleteFromClub}>
+            </lightning-button>
+        </div>
+    </div>
+</template>

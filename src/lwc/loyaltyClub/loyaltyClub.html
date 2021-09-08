@@ -1,7 +1,7 @@
 <template>
     <div class="exampleHolder">
         <template if:true={loaded}>
-            <lightning-record-edit-form object-api-name="Contact">
+            <lightning-record-edit-form object-api-name="Contact" record-id={contact.Id}>
                 <h1 style="text-align: center; font-size: 20px; color: green; margin-bottom: 20px;">{label.clubTitle}</h1>
                 <lightning-messages></lightning-messages>
                 <lightning-layout multiple-rows>

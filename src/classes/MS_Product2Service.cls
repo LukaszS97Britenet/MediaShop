@@ -93,20 +93,21 @@ public with sharing class MS_Product2Service {
 
     @AuraEnabled
     public static PricebookEntryResults getProducts(String payloadJson) {
-        System.debug('jestem');
         SearchWrapper payload = (SearchWrapper) JSON.deserialize(payloadJson, SearchWrapper.class);
         PricebookEntryResults searchWrapperResults = new PricebookEntryResults();
         try {
-            searchWrapperResults.results = Database.query(queryGenerator(payload));
+            Id contactId = [SELECT ContactId FROM User WHERE Id =: UserInfo.getUserId() LIMIT 1].ContactId;
+            Boolean isClubUser = [SELECT Id, FirstName, LastName, Interested__c, KnowAboutUs__c, IsSendEmailAllowed__c, Is_In_Club__c FROM Contact WHERE Id =: contactId].Is_In_Club__c;
+            searchWrapperResults.results = Database.query(queryGenerator(payload, isClubUser));
             return searchWrapperResults;
         } catch (Exception e) {
-            System.debug(e.getMessage());
-            if (e.getMessage().contains('<EOF>')) {
-                System.debug('whodze');
+//            System.debug(e.getMessage());
+//            if (e.getMessage().contains('<EOF>')) {
+//                System.debug('whodze');
                 searchWrapperResults.results = [SELECT Id,Name,UnitPrice,Product2Id,Pricebook2Id, Product2.MainImageId__c FROM PricebookEntry WHERE Pricebook2.isStandard = true];
                 return searchWrapperResults;
-            }
-            return null;
+//            }
+//            return null;
         }
     }
 
@@ -125,14 +126,14 @@ public with sharing class MS_Product2Service {
         return true;
     }
 
-    public static String queryGenerator(SearchWrapper params) {
+    public static String queryGenerator(SearchWrapper params, Boolean isClubber) {
         String searchQuery = '';
-        searchQuery = 'SELECT Id,Name,UnitPrice,Product2Id,Pricebook2Id, Product2.MainImageId__c FROM PricebookEntry WHERE ';
-        searchQuery += String.join(generateListOfPartQueries(params), ' AND ');
+        searchQuery = 'SELECT Id,Name,UnitPrice,Product2Id,Pricebook2Id, Product2.MainImageId__c, PercentDiscount__c FROM PricebookEntry WHERE ';
+        searchQuery += String.join(generateListOfPartQueries(params, isClubber), ' AND ');
         return searchQuery;
     }
 
-    public static List<String> generateListOfPartQueries(SearchWrapper params) {
+    public static List<String> generateListOfPartQueries(SearchWrapper params, Boolean isClubber) {
         String partOfQuery;
         List<String> listOfPartsOfQueries = new List<String>();
         if (!String.isBlank(params.productName)) {
@@ -148,7 +149,11 @@ public with sharing class MS_Product2Service {
             partOfQuery = 'UnitPrice <= ' + escapeSingleQuotes(params.costTo) + '';
             listOfPartsOfQueries.add(partOfQuery);
         }
-        listOfPartsOfQueries.add('Pricebook2.isStandard = true');
+        if (isClubber) {
+            listOfPartsOfQueries.add('Pricebook2.Name = \'Club\'');
+        } else {
+            listOfPartsOfQueries.add('Pricebook2.isStandard = true');
+        }
         return listOfPartsOfQueries;
     }
 
