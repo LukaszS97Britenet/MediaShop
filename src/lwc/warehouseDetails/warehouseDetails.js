@@ -52,7 +52,7 @@ export default class WarehouseDetails extends LightningElement {
     }
 
     searchWarehouseLineItems() {
-        searchWarehouseLineItems({ phrase: this.searchedPhraseForWarehouse })
+        searchWarehouseLineItems({ phrase: this.searchedPhraseForWarehouse, warehouseId: this.recordId })
             .then((warehouseLineItems) => {
                 this.warehouseLineItems = warehouseLineItems;
                 console.log(warehouseLineItems);

@@ -19,8 +19,8 @@ public with sharing class WarehouseController {
     }
 
     @AuraEnabled
-    public static List<Warehouse_Line_Item__c> searchWarehouseLineItems(String phrase) {
-        List<Warehouse_Line_Item__c> warehouseLineItems = [SELECT Id, Product__r.MainImageId__c, Product__r.Name, Products_Amount__c, Product__r.Capacity__c, Warehouse__r.Id, Warehouse__r.Occupied_Capacity__c FROM Warehouse_Line_Item__c WHERE Product__r.Name LIKE :'%'+phrase+'%' AND Products_Amount__c>0];
+    public static List<Warehouse_Line_Item__c> searchWarehouseLineItems(String phrase, String warehouseId) {
+        List<Warehouse_Line_Item__c> warehouseLineItems = [SELECT Id, Product__r.MainImageId__c, Product__r.Name, Products_Amount__c, Product__r.Capacity__c, Warehouse__r.Id, Warehouse__r.Occupied_Capacity__c FROM Warehouse_Line_Item__c WHERE Product__r.Name LIKE :'%'+phrase+'%' AND Products_Amount__c>0 AND Warehouse__c = :warehouseId];
         return warehouseLineItems;
     }
 
