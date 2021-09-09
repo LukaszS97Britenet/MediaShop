@@ -1,0 +1,55 @@
+<template>
+    <div class="exampleHolder">
+        <template if:true={loaded}>
+            <lightning-layout multiple-rows="true" pull-to-boundary="small">
+                <lightning-layout-item class="slds-var-p-around_x-small" size="8">
+                    <lightning-card>
+                        <div class="slds-grid" style="width: 100%;">
+                            <div style="width: 30%;">
+
+                            </div>
+                            <div class="slds-grid" style="width: 40%;">
+                                <lightning-input class="searchbox" type="Search" onchange={handleFieldChange}
+                                                 value={searchedPhrase}>
+                                </lightning-input>
+                                <lightning-button name="submit"
+                                                  class="searchbutton"
+                                                  label={label.search}
+                                                  onclick={search}>
+                                </lightning-button>
+                            </div>
+                            <div style="width: 30%;">
+
+                            </div>
+                        </div>
+
+                        <lightning-layout multiple-rows="true" pull-to-boundary="small">
+                            <template for:each={warehouses} for:item="warehouse">
+                                <lightning-layout-item key={warehouse.Id} size="3" class="slds-var-p-around_x-small">
+
+                                    <c-warehouse-manager-tile warehouse={warehouse}></c-warehouse-manager-tile>
+
+                                </lightning-layout-item>
+                            </template>
+                        </lightning-layout>
+
+                    </lightning-card>
+                </lightning-layout-item>
+                <lightning-layout-item class="slds-var-p-around_x-small" size="4">
+                    <lightning-card>
+                        <div style="margin-left: 10px; margin-right: 10px;">
+                            <lightning-map
+                                    map-markers={mapMarkers}
+                                    zoom-level="5"
+                                    markers-title={label.warehouses}>
+                            </lightning-map>
+                        </div>
+                    </lightning-card>
+                </lightning-layout-item>
+            </lightning-layout>
+        </template>
+        <template if:false={loaded}>
+            <lightning-spinner alternative-text="Loading"></lightning-spinner>
+        </template>
+    </div>
+</template>

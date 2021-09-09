@@ -1,0 +1,32 @@
+<template>
+    <div class="tail" style="height: 310px; background-color: white;">
+        <div style="text-align: center; margin-top: 20px;">
+            <img src={productImg} style="height: 130px;"
+                 alt={product.Name}/>
+        </div>
+        <div class="tailTitle"
+             style="font-size: 15px; font-weight: bold; max-height:50px; width: 100%;">
+            {product.Name}<br/>
+            {label.capacity}: {product.Capacity__c}
+        </div>
+        <div class="tailTitle slds-grid"
+             style="font-size: 15px; max-height:50px; width: 100%; text-align: center;">
+            <div style="width: 18%;"></div>
+            <div style="width: 64%;">
+                <lightning-input label="Amount of products to Add/Remove:"
+                                 onchange={handleFieldChange}
+                                 placeholder={label.amountPlaceholder}
+                                 value={amount}>
+                </lightning-input>
+            </div>
+            <div style="width: 18%;"></div>
+        </div>
+        <div class="tailTitle"
+             style="font-size: 13px; font-weight: bold; max-height:50px; width: 100%; margin-top: 15px;">
+            <lightning-button variant="destructive-text"
+                              label="Change"
+                              onclick={changeProductAmount}>
+            </lightning-button>
+        </div>
+    </div>
+</template>

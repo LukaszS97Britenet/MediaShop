@@ -1,0 +1,18 @@
+<template>
+    <div class="tail" style="height: 130px; background-color: white;">
+        <div class="tailTitle"
+             style="font-size: 15px; max-height:50px; width: 100%; margin-top: 20px;">
+            {label.name}: <b>{warehouse.Name}</b><br>
+            {label.capacity}: <b>{warehouse.Capacity__c}</b>
+        </div>
+        <div class="tailTitle"
+             style="font-size: 13px; font-weight: bold; max-height:50px; width: 100%;">
+            <lightning-button variant="destructive-text"
+                              type="submit"
+                              name="submit"
+                              label={label.showDetails}
+                              onclick={goToWarehouse}>
+            </lightning-button>
+        </div>
+    </div>
+</template>

@@ -15,6 +15,7 @@
         <members>MS_CaseHandler</members>
         <members>MS_TriggerHandler</members>
         <members>ContactController</members>
+        <members>WarehouseController</members>
         <name>ApexClass</name>
     </types>
     <types>
@@ -127,6 +128,12 @@
         <members>loyaltyClub</members>
         <members>loyaltyManager</members>
         <members>loyaltyTile</members>
+        <members>warehouseManager</members>
+        <members>warehouseManagerTile</members>
+        <members>mapForWarehouse</members>
+        <members>warehouseDetails</members>
+        <members>productTile</members>
+        <members>warehouseLineItemTile</members>
         <name>LightningComponentBundle</name>
     </types>
     <version>51.0</version>
