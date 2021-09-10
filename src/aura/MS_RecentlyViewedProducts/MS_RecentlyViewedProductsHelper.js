@@ -7,6 +7,7 @@
             if(state === "SUCCESS") {
                 component.set("v.products", result);
                 console.log(component.get("v.products"));
+                component.set("v.spinner", false);
             }
         });
         $A.enqueueAction(action);

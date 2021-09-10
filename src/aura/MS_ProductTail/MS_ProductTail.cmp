@@ -12,6 +12,8 @@
                       fields="Profile.Name"
                       targetFields="{!v.CurrentUser}"/>
 
+    <aura:registerEvent name="MS_ShowSpinnerEvent" type="c:MS_ShowSpinnerEvent"/>
+
     <div class="tail" style="height: 205px; background-color: white;">
         <aura:if isTrue="{!not(empty(v.product.Product2.MainImageId__c))}">
             <div style="text-align: center">
@@ -20,16 +22,21 @@
                      alt="{!v.product.Name}"/>
             </div>
             <div class="slds-grid">
-                <div class="tailTitle" style="width: 30%;">
+                <div class="tailTitle" style="width: 35%;">
                 </div>
                 <div class="tailTitle" onclick="{!c.productDetails}"
-                     style="max-height:50px; width: 40%; background-color: rgb(230, 230, 230);">
+                     style="max-height:50px; width: 30%; background-color: rgb(230, 230, 230);">
                     {!v.product.Name}<br/>Cost: €{!v.product.UnitPrice}
                 </div>
-                <div class="tailTitle" style="width: 30%; padding-top: 10px; padding-left: 40px;">
-                    <aura:if isTrue="{!v.CurrentUser.Profile.Name == 'Customer Community'}">
+                <div class="tailTitle" style="width: 35%; padding-top: 5px; padding-left: 40px;">
+                    <aura:if isTrue="{!and(v.CurrentUser.Profile.Name == 'Customer Community',v.product.Product2.Amount_From_Warehouses__c>0)}">
                         <img style="height: 25px; width: 25px; cursor: pointer;" title="Add To Cart"
                              src="{! $Resource.MS_Cart}" onclick="{!c.addToShoppingCart}"/>
+                    </aura:if>
+                    <aura:if isTrue="{!and(v.CurrentUser.Profile.Name == 'Customer Community',1 > v.product.Product2.Amount_From_Warehouses__c)}">
+                        <img style="height: 25px; width: 25px; cursor: default; opacity: 0.5;" title="Out of stock"
+                             src="{! $Resource.MS_Cart}"/>
+                        <p style="font-size: 10px;">Out of stock</p>
                     </aura:if>
                 </div>
             </div>

@@ -95,17 +95,67 @@ public with sharing class MS_Product2Service {
     public static PricebookEntryResults getProducts(String payloadJson) {
         SearchWrapper payload = (SearchWrapper) JSON.deserialize(payloadJson, SearchWrapper.class);
         PricebookEntryResults searchWrapperResults = new PricebookEntryResults();
+        List<AggregateResult> listResults = [SELECT Product__c, SUM(Products_Amount__c) amount FROM Warehouse_Line_Item__c GROUP BY Product__c];
+        Map<Id, Decimal> mapOfCountFromWarehouse = new Map<Id, Decimal>();
+        for (AggregateResult result : listResults) {
+            mapOfCountFromWarehouse.put((Id) result.get('Product__c'), (Decimal) result.get('amount'));
+        }
+        MS_ShoppingCart.Cart productFromCart = new MS_ShoppingCart.Cart();
+        try {
+            productFromCart = MS_ShoppingCart.getCart();
+            System.debug(productFromCart);
+        } catch (Exception e) {
+
+        }
         try {
             Id contactId = [SELECT ContactId FROM User WHERE Id =: UserInfo.getUserId() LIMIT 1].ContactId;
             Boolean isClubUser = [SELECT Id, FirstName, LastName, Interested__c, KnowAboutUs__c, IsSendEmailAllowed__c, Is_In_Club__c FROM Contact WHERE Id =: contactId].Is_In_Club__c;
             searchWrapperResults.results = Database.query(queryGenerator(payload, isClubUser));
+            for (PricebookEntry pricebook : searchWrapperResults.results) {
+                if(mapOfCountFromWarehouse.get(pricebook.Product2Id) > 0) {
+                    pricebook.Product2.Amount_From_Warehouses__c = mapOfCountFromWarehouse.get(pricebook.Product2Id);
+                } else {
+                    pricebook.Product2.Amount_From_Warehouses__c = 0;
+                }
+            }
+            if(productFromCart.products.size() > 0) {
+                Map<Id, Decimal> mapOfProductsFromCart = new Map<Id, Decimal>();
+                for (MS_ShoppingCart.Product product : productFromCart.products) {
+                    mapOfProductsFromCart.put(product.product.Product2Id, product.quantity);
+                }
+                for (PricebookEntry pricebook : searchWrapperResults.results) {
+                    if (mapOfProductsFromCart.get(pricebook.Product2Id) > 0) {
+                        System.debug(mapOfProductsFromCart.get(pricebook.Product2Id));
+                        pricebook.Product2.Amount_From_Warehouses__c -= mapOfProductsFromCart.get(pricebook.Product2Id);
+                    }
+                }
+            }
             return searchWrapperResults;
         } catch (Exception e) {
 //            System.debug(e.getMessage());
 //            if (e.getMessage().contains('<EOF>')) {
 //                System.debug('whodze');
                 searchWrapperResults.results = [SELECT Id,Name,UnitPrice,Product2Id,Pricebook2Id, Product2.MainImageId__c FROM PricebookEntry WHERE Pricebook2.isStandard = true];
-                return searchWrapperResults;
+            for (PricebookEntry pricebook : searchWrapperResults.results) {
+                if(mapOfCountFromWarehouse.get(pricebook.Product2Id) > 0) {
+                    pricebook.Product2.Amount_From_Warehouses__c = mapOfCountFromWarehouse.get(pricebook.Product2Id);
+                } else {
+                    pricebook.Product2.Amount_From_Warehouses__c = 0;
+                }
+            }
+            if(productFromCart.products.size() > 0) {
+                Map<Id, Decimal> mapOfProductsFromCart = new Map<Id, Decimal>();
+                for (MS_ShoppingCart.Product product : productFromCart.products) {
+                    mapOfProductsFromCart.put(product.product.Product2Id, product.quantity);
+                }
+                for (PricebookEntry pricebook : searchWrapperResults.results) {
+                    if (mapOfProductsFromCart.get(pricebook.Product2Id) > 0) {
+                        System.debug(mapOfProductsFromCart.get(pricebook.Product2Id));
+                        pricebook.Product2.Amount_From_Warehouses__c -= mapOfProductsFromCart.get(pricebook.Product2Id);
+                    }
+                }
+            }
+            return searchWrapperResults;
 //            }
 //            return null;
         }
@@ -170,8 +220,8 @@ public with sharing class MS_Product2Service {
         if (String.isNotBlank(wrapper.category)) {
             product.Category__c = String.valueOf(wrapper.category);
         }
-        if (String.isNotBlank(wrapper.currentInventory)) {
-            product.Current_Inventory__c = Decimal.valueOf(wrapper.currentInventory);
+        if (String.isNotBlank(wrapper.capacity)) {
+            product.Capacity__c = Decimal.valueOf(wrapper.capacity);
         }
         if (String.isNotBlank(wrapper.installment)) {
             System.debug(wrapper.installment);
@@ -194,7 +244,7 @@ public with sharing class MS_Product2Service {
         public String color;
         public String productCode;
         public String cost;
-        public String currentInventory;
+        public String capacity;
         public String installment;
         public String active;
         public String description;

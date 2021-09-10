@@ -14,6 +14,7 @@
     <aura:handler name="init" action="{!c.doInit}" value="{!this}"/>
     <aura:handler event="aura:doneRendering" action="{!c.handleResize}"/>
 
+    <div style="background-color: white;">
 
     <aura:if isTrue="{!not(empty(v.selectedImage))}">
         <div style="text-align: center;">
@@ -67,5 +68,6 @@
                 </lightning:layout>
             </lightning:layoutItem>
         </lightning:layout>
+    </div>
     </div>
 </aura:component>

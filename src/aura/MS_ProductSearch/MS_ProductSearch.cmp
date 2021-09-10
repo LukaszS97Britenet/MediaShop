@@ -1,7 +1,8 @@
 <aura:component description="MS_ProductSearch" controller="MS_Product2Service" implements="forceCommunity:availableForAllPageTypes,flexipage:availableForAllPageTypes">
 
     <ltng:require styles="{!$Resource.NoHeader}"/>
-
+    <aura:handler name="MS_ShowSpinnerEvent" event="c:MS_ShowSpinnerEvent" action="{!c.handleShowSpinner}"/>
+    <aura:handler name="MS_RefreshViewAppEvent" event="c:MS_RefreshViewAppEvent" action="{!c.handleRefreshView}"/>
     <aura:attribute name="productName" type="String"/>
     <aura:attribute name="categories" type="String[]" default="Headset,Mouse,Monitor,Laptop,PC,Keyboard,Loudspeakers"/>
     <aura:attribute name="costFrom" type="Currency"/>

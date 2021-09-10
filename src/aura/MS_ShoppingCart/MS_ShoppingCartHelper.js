@@ -1,6 +1,6 @@
 ({
     getCart: function(component) {
-        const action = component.get("c.getCart");
+        const action = component.get("c.getCartWithWarehouseAmount");
         action.setCallback(this, function(response) {
             let state = response.getState();
             let result = response.getReturnValue();
@@ -61,6 +61,7 @@
             let state = response.getState();
             let result = response.getReturnValue();
             if(state === "SUCCESS") {
+                console.log(result);
                 component.set("v.cart", result);
                 this.calculateTotalPrice(component);
                 var appEvent = $A.get("e.c:MS_CartProductsAmount");

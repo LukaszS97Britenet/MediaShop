@@ -65,7 +65,7 @@
                        color: component.get("v.color"),
                        productCode: component.get("v.productCode"),
                        cost: component.get("v.cost"),
-                       currentInventory: component.get("v.currentInventory"),
+                       capacity: component.get("v.capacity"),
                        installment: component.get("v.installment"),
                        active: component.get("v.active"),
                        description: component.get("v.description")

@@ -29,7 +29,7 @@
     <aura:attribute name="active" type="Boolean" default="false"/>
     <aura:attribute name="description" type="String"/>
     <aura:attribute name="cost" type="Currency"/>
-    <aura:attribute name="currentInventory" type="Decimal"/>
+    <aura:attribute name="capacity" type="Decimal"/>
     <aura:attribute name="color" type="String"/>
     <aura:attribute name="operationType" type="String" default="Edit"/>
     <aura:attribute name="categories" type="String[]" default="Headset,Mouse,Monitor,Laptop,PC,Keyboard,Loudspeakers"/>
@@ -61,8 +61,8 @@
                          name="productCode"/>
         <lightning:input value="{!v.cost}" placeholder="{!$Label.c.MS_Cost}" label="{!$Label.c.MS_Cost}" name="cost"
                          required="true"/>
-        <lightning:input value="{!v.currentInventory}" placeholder="{!$Label.c.MS_CurrentInventory}"
-                         label="{!$Label.c.MS_CurrentInventory}" name="currentInventory"/>
+        <lightning:input value="{!v.capacity}" placeholder="{!$Label.c.MS_CurrentInventory}"
+                         label="{!$Label.c.Capacity}" name="capacity" required="true"/>
         <lightning:input checked="{!v.installment}" name="installment" label="{!$Label.c.MS_Installment}"
                          type="checkbox"/>
         <lightning:input checked="{!v.active}" name="active" label="{!$Label.c.MS_Active}" type="checkbox"/>

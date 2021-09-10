@@ -36,7 +36,7 @@
                 component.set("v.installment", result.result.Product2.Installment__c);
                 component.set("v.active", result.result.Product2.IsActive);
                 component.set("v.description", result.result.Product2.Description);
-                component.set("v.currentInventory", result.result.Product2.Current_Inventory__c);
+                component.set("v.capacity", result.result.Product2.Capacity__c);
                 component.set("v.color", result.result.Product2.Color__c);
                 component.set("v.cost", result.result.UnitPrice);
             }

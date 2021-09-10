@@ -56,6 +56,8 @@
         <members>MS_ActualizeCartQuantity</members>
         <members>MS_RecentlyViewedProducts</members>
         <members>MS_HistoryOrder</members>
+        <members>MS_ShowSpinnerEvent</members>
+        <members>MS_RefreshViewAppEvent</members>
         <name>AuraDefinitionBundle</name>
     </types>
     <types>

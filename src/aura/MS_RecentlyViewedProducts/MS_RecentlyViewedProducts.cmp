@@ -2,6 +2,18 @@
 
     <aura:attribute name="products" type="List"/>
     <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="spinner" type="boolean" default="true"/>
+    <aura:handler name="MS_ShowSpinnerEvent" event="c:MS_ShowSpinnerEvent" action="{!c.handleShowSpinner}"/>
+
+    <aura:if isTrue="{!v.spinner}">
+        <div aura:id="spinnerId" class="slds-spinner_container">
+            <div class="slds-spinner--brand  slds-spinner slds-spinner--large slds-is-relative" role="alert">
+                <span class="slds-assistive-text">Loading...</span>
+                <div class="slds-spinner__dot-a"></div>
+                <div class="slds-spinner__dot-b"></div>
+            </div>
+        </div>
+    </aura:if>
 
     <div style="text-align: center; font-size: 20px;">
         <h1>{!$Label.c.Welcome_on_MediaShop}</h1>

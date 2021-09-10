@@ -18,6 +18,7 @@
                  component.set("v.type", 'Success');
                  component.set("v.message", 'Products added to cart successfully.');
                  component.find("toastCmp").toast();
+                 $A.get('e.force:refreshView').fire();
             } else {
                 component.set("v.type", 'Error');
                 component.set("v.message", 'Something went wrong.');

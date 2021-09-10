@@ -1,6 +1,7 @@
 <aura:component implements="forceCommunity:themeLayout" access="global" description="MS_CustomTheme"
                 controller="MS_ShoppingCart">
 
+    <aura:registerEvent name="appEvent" type="c:MS_RefreshViewAppEvent"/>
     <aura:attribute name="profileMenu" type="Aura.Component[]" required="false"/>
     <aura:attribute name="navBar" type="Aura.Component[]" required="false"/>
     <aura:attribute name="CurrentUser" type="Object"/>

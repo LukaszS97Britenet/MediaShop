@@ -66,6 +66,26 @@ public with sharing class MS_ShoppingCart {
     }
 
     @AuraEnabled
+    public static Cart getCartWithWarehouseAmount() {
+        Cart cartItems = getCart();
+        System.debug(cartItems);
+        List<AggregateResult> listResults = [SELECT Product__c, SUM(Products_Amount__c) amount FROM Warehouse_Line_Item__c GROUP BY Product__c];
+        Map<Id, Decimal> mapOfCountFromWarehouse = new Map<Id, Decimal>();
+        for (AggregateResult result : listResults) {
+            mapOfCountFromWarehouse.put((Id) result.get('Product__c'), (Decimal) result.get('amount'));
+        }
+        System.debug(mapOfCountFromWarehouse);
+        for (Product product : cartItems.products) {
+            product.product.Product2.Amount_From_Warehouses__c = mapOfCountFromWarehouse.get(product.product.Product2Id) - product.quantity;
+        }
+        String partitionInput = 'local.ShoppingCart';
+        String counterKeyInput = 'Cart';
+        Cache.SessionPartition sessionPartition = Cache.Session.getPartition(partitionInput);
+        sessionPartition.put(counterKeyInput, JSON.serialize(cartItems));
+        return cartItems;
+    }
+
+    @AuraEnabled
     public static Decimal getAmountOfProducts() {
         String partitionInput = 'local.ShoppingCart';
         String counterKeyInput = 'Cart';
@@ -109,6 +129,10 @@ public with sharing class MS_ShoppingCart {
         while (i < cartFromSession.products.size()){
             if(cartFromSession.products.get(i).product.Product2Id == id){
                 cartFromSession.products.get(i).quantity += Decimal.valueOf(quantity);
+                System.debug(cartFromSession.products.get(i).product.Product2.Amount_From_Warehouses__c);
+                System.debug(Decimal.valueOf(quantity));
+                cartFromSession.products.get(i).product.Product2.Amount_From_Warehouses__c -= Decimal.valueOf(quantity);
+                System.debug(cartFromSession.products.get(i).product.Product2.Amount_From_Warehouses__c);
                 if(cartFromSession.products.get(i).quantity == 0) {
                     cartFromSession.products.remove(i);
                 }

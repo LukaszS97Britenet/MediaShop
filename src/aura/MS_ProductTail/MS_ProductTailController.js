@@ -9,6 +9,8 @@
     },
 
     addToShoppingCart: function(component, event, helper) {
+        var cmpEvent = component.getEvent("MS_ShowSpinnerEvent");
+        cmpEvent.fire();
         helper.addToCart(component);
     }
 })
